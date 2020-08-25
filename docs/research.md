@@ -15,8 +15,8 @@ At the moment, Mr Ashley plans his rail journeys in the UK using the mobile 'Tra
 ## Additional research
 
 API - SOAP (which is how the NRE Darwin API is provided) is particularly outdated. Find a JSON alternative if possible? (Done - Huxley)
-UWA - how do these work? Researching in spare time...
 
+UWA - how do these work? Researching in spare time...
 
 Using the National Rail API itself - how does this work in the scope of dynamically calculating efficient routings?
 
