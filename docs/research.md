@@ -12,8 +12,11 @@ At the moment, Mr Ashley plans his rail journeys in the UK using the mobile 'Tra
 - Due to the real time nature of delays, difficult to reroute journey to ensure earliest arrival time.
 - Poor user experience on current platforms (Trainline, NRE)
 
+## Additional research
 
-
+API - SOAP (which is how the NRE Darwin API is provided) is particularly outdated. Find a JSON alternative if possible? (Done - Huxley)
+UWA - how do these work? Researching in spare time...
+Using the National Rail API itself - how does this work in the scope of dynamically calculating efficient routings?
 
 ## Interview Questions
 
