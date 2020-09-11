@@ -18,7 +18,7 @@ API - SOAP (which is how the NRE Darwin API is provided) is particularly outdate
 
 UWA - how do these work? Researching in spare time...
 
-Using the National Rail API itself - how does this work in the scope of dynamically calculating efficient routings?
+Using the National Rail API itself - how does this work in the scope of dynamically calculating efficient routings? >> Need to look into getting Journey Planner access.
 
 ## Interview Questions
 
