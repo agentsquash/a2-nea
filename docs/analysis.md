@@ -42,7 +42,7 @@ During the interview, Mr Ashley pointed out the NS (Dutch Railways) app as an ex
 The interview has provided me with several useful points of information that will contribute greatly in developing a proposed solution. Overall, the system needs to be
 
 ### Further Research
-During my initial interview, Mr Ashley pointed out his desire for a service which would enable him to automatically claim 
+During my initial interview, Mr Ashley pointed out his desire for a service which would enable him to automatically claim money back for delays caused during the journey through the Delay Repay scheme. 
 
 ### Analysis of Example Journey
 Following the interview, Mr Ashley has kindly provided me with an example of his typical journey from Ulverston to Chester. This is illustrated in the diagram below:
@@ -63,6 +63,15 @@ In this example, there is still the possibility of Mr Ashley being able to conne
 
 
 ### Data Flow Overview
+**Input:**
+
+**Process:**
+
+**Output:**
+
+**Storage:**
+
+
 
 ### Data Flow Diagrams
 
