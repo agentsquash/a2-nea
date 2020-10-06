@@ -15,20 +15,27 @@ Therefore, Mr Ashley is seeking a solution that informs him of any disruption to
 
 ### Interview with Client
 **What system do you currently use for travelling during disruption?**
+I use either National Rail Enquiries or the Trainline app. I use these apps to check the actual arrival time against the schedule to determine if I need to change my routing. This is worse than when I travel in the Netherlands, where the NS app automatically informs me of any disruption and informs me of my options, including suggested alternate routes. 
 
 **What benefits does your current system have?**
+It tells me whether my train is on time or not, and is also very good for initial journey planning and buying tickets - especially following the COVID-19 crisis involving a more contactless railway and frequent timetable changes.
 
 **What are the drawbacks of your current system?**
+When I am caught up in disruption, I have to manually check my alternate options. This is disruptive to my workflow.
 
 **Are there any particular features you feel are essential to a new system (must haves)?**
+Automatic notification of delays and information about alternative options.
 
 **Are there any features that you feel would improve the system but do not require? (nice to haves)**
+I often spend a disproportionate amount of time having to claim back tickets through Delay Repay schemes - it would be beneficial if it was able to provide the neccesary information for a Delay Repay claim to the relevant Train Operating Company, and if possible make the claim for me.
 
 **How would you envisage using this new system? (web app / mobile app?)**
+A mobile app would be beneficial.
 
 **Do you envisage a need to connect this system with other corporate services?**
 
 **Is there anything else you would like to add?**
+
 
 ### Current System
 Currently, Mr Ashley books his journeys on the 'Trainline' app prior to the journey - but typically does not have time to check the status of his journey. As such, delays are often realised upon arriving at the station or during the journey. If the delay is sufficient enough to cause a missed connection, many of his journeys have the potential to have quicker arrival at the destination via a different routing - meaning that he often replans his whole journey from that point. However, when involved in disruption, this does not always enable him to achieve the earliest arrival at his destination due to the real time nature of delays.
@@ -45,13 +52,24 @@ Following the interview, Mr Ashley has kindly provided me with an example of his
 On a typical journey, Mr Ashley travels on the 17:04 to Preston, before changing at Preston for the 18:17 to Crewe. He then waits for 27 minutes at Crewe for the 19:24 service to Chester. This is the journey that Mr Ashley is given in the Trainline app when booking prior to the journey; it does not account for any potential disruption. During our initial interview, Mr Ashley highlighted this journey as being one which is often disrupted.
 
 This journey also highlights some of the complications involved in journey planning in the UK. While ultimately dictated by available services, a factor that is introduced on journeys involving connections is that of the Minimum Connection Time (MCT). This time is a reasonable amount of time for a person travelling to make a change between services, even at a station they are unfamiliar with. It should be noted that the minimum connection time is **not** the minimum time actually required to change between two services, but rather a figure for journey planning purposes. As such, while it is a reasonable assumption to make that when a connection is below the MCT that a new route may be needed, a tight/unofficial connection can often still be made.
-
+`
 Following been given this example, I have also found the timetable data for the period following the 1704 departure from Ulverston. This can be found in **Appendix I**.
 
 #### Example 1: Disruption to first journey
 *Mr Ashley boards the 17:04 service from Ulverston, which departs on time. However, prior to arriving at Preston, the train encounters cows on the line – causing a 9 minute delay. The train arrives into Preston at 18:15 – below the minimum connection time of 8 minutes.*
 
-In this example, there is still the possibility of Mr Ashley being able to connect onto the 18:17 service that he originally intended to travel on. However, the connection is extremely short, so for the purposes of this example, I shall assume that he missed it and needs to find a new routing. These potential routings are highlighted in the diagram below.
+In this example, there is still the possibility of Mr Ashley being able to connect onto the 18:17 service that he originally intended to travel on. However, the connection is extremely short, so for the purposes of this example, we shall assume that he missed it and needs to find a new routing. These potential routings are highlighted in the diagram below.
+
+![JourneyAnalysis_Example1](https://user-images.githubusercontent.com/24415853/94919199-046bed00-04ac-11eb-8222-f47649b96a9d.png)
+
+There are three viable reroutes for this journey - one following the original routing via Crewe, and two via Warrington Bank Quay.
+
+The first rerouting, via Crewe, is the most obvious. It would involve joining the next service to Crewe, then the next service to Chester. This journey is indeed the one that many people would follow in this situation - however, it causes the most delay at 60 minutes while also involving a longer wait at Preston due to the timetabling of Crewe services.
+
+The other two reroutes both involve changing at Warrington Bank Quay (WBQ) - with the difference between the routings being the connection time at Warrington. In the case of the second option, there is a four minute connection time at WBQ - below the minimum connection time for the station, but a cross platform interchange and as such very reasonable to plan for. It does not, however, allow for further disruption due to the tight/unofficial connection. The third reroute resolves this issue with a 17 minute connection time at WBQ - above the minimum five minutes, and allowing for further disruption.
+
+In this scenario, it is logical to plan for the second option but be prepared to take the third. These reroutes, however, deliver a massive time saving over the most obvious reroute - with a theoretical maximum delay of 16 minutes routing via Warrington compared to 60 minutes via Crewe. These time savings highlight the benefits of rerouting - however, this process is often not easy when travelling.
+
 
 ### Acceptable Limitations
 
