@@ -40,9 +40,16 @@ A mobile app would be beneficial.
 ### Current System
 Currently, Mr Ashley books his journeys on the 'Trainline' app prior to the journey - but typically does not have time to check the status of his journey. As such, delays are often realised upon arriving at the station or during the journey. If the delay is sufficient enough to cause a missed connection, many of his journeys have the potential to have quicker arrival at the destination via a different routing - meaning that he often replans his whole journey from that point. However, when involved in disruption, this does not always enable him to achieve the earliest arrival at his destination due to the real time nature of delays.
 
+### Research
+During the interview, Mr Ashley pointed out the NS (Dutch Railways) app as an example of a suitable solution. 
+
 ## Analysis of Investigation
 
 ### Interview Analysis
+The interview has provided me with several useful points of information that will contribute greatly in developing a proposed solution. Overall, the system needs to be
+
+### Further Research
+During my initial interview, Mr Ashley pointed out his desire for a service which would enable him to automatically claim money back for delays caused during the journey through the Delay Repay scheme. 
 
 ### Analysis of Example Journey
 Following the interview, Mr Ashley has kindly provided me with an example of his typical journey from Ulverston to Chester. This is illustrated in the diagram below:
@@ -71,12 +78,30 @@ The other two reroutes both involve changing at Warrington Bank Quay (WBQ) - wit
 In this scenario, it is logical to plan for the second option but be prepared to take the third. These reroutes, however, deliver a massive time saving over the most obvious reroute - with a theoretical maximum delay of 16 minutes routing via Warrington compared to 60 minutes via Crewe. These time savings highlight the benefits of rerouting - however, this process is often not easy when travelling.
 
 
-### Acceptable Limitations
+
+
+### Data Flow Overview
+**Input:**
+
+**Process:**
+
+**Output:**
+
+**Storage:**
+
+
 
 ### Data Flow Diagrams
 
-### Research
 
 ## Proposed Solution
 
 ### Data Volumes
+I intend to provide the solution as a website for the end-user, necessitating minimal storage space for the end user.
+
+At the server side, most information is not stored locally but rather fetched as necessary from the National Rail/TFL APIs. 
+
+### Acceptable Limitations
+Unfortunately, it is unviable to obtain access to the National Rail Journey Planning system due to cost. This means that the journey planning solution will have to be manually maintained, and as such may lack fully up to date information on all stations on the National Rail network, such as changed MCTs and new alternative routings. Furthermore, due to time constraints, my solution will only have limited integration with other forms of public transport which may be more viable options (such as taking a bus). 
+The system will also be unable to determine whether the users ticket is valid for the routing taken, as it is not possible to fully integrate ticketing restrictions within the time frame of the project. However, due to the focus of the solution largely being on finding new journeys during disruption (where ticket restrictions are typically relaxed following missing the original service) this issue in particular should have minimal impact on the usability of the solution.
+// Not here? // Mr Ashley has also stated that while he would like to see the implementation of automatic delay repay within the solution, it would be acceptable if the application only provided the information necessary for the claim. Further research into this has highlighted the unsuitability of many TOCs web services for automatic solution-based claims - typically requiring registration. The introduction of this feature would also require the storage of payment information, which would introduce new complexity to the solution.
