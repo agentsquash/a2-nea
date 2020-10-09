@@ -14,8 +14,8 @@ Furthermore, recalculating the route manually typically does not take into accou
 Therefore, Mr Ashley is seeking a solution that informs him of any disruption to his journey in real time; and if the disruption is so great as to cause a missed connection, recalculate his route based on the fastest possible routing.
 
 ### Interview with Client
-**What system do you currently use for travelling during disruption?**
-I use either National Rail Enquiries or the Trainline app. I use these apps to check the actual arrival time against the schedule to determine if I need to change my routing. This is worse than when I travel in the Netherlands, where the NS app automatically informs me of any disruption and informs me of my options, including suggested alternate routes. 
+**How do you travel normally in the UK?**
+I use the Trainline app to book my tickets prior to commencing my journey. Then during my journey, I use station departure boards and the Trainline app to check if there has been any disruption to my journey. When I am aware of any significant disruption to my journey, such as a late arrival time, I use the Trainline app again to determine if I need to change my journey. However, this is particularly difficult to do when travelling as there may be poor loading times or my journey may need to change further. This is much worse than the solution I use for travel in the Netherlands, where the NS (Dutch Railways) app automatically informs me of any disruption and quickly informs me of my available options, including alternate routes.
 
 **What benefits does your current system have?**
 It tells me whether my train is on time or not, and is also very good for initial journey planning and buying tickets - especially following the COVID-19 crisis involving a more contactless railway and frequent timetable changes.
