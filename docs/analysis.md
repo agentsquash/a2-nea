@@ -14,32 +14,32 @@ Furthermore, recalculating the route manually typically does not take into accou
 Therefore, Mr Ashley is seeking a solution that informs him of any disruption to his journey in real time; and if the disruption is so great as to cause a missed connection, recalculate his route based on the fastest possible routing.
 
 ### Interview with Client
-**How do you travel normally in the UK?**
+**How do you travel normally in the UK?**   
 I use the Trainline app to book my tickets prior to commencing my journey. Then during my journey, I use station departure boards and the Trainline app to check if there has been any disruption to my journey. When I am aware of any significant disruption to my journey, such as a late arrival time, I use the Trainline app again to determine if I need to change my journey. However, this is particularly difficult to do when travelling as there may be poor loading times or my journey may need to change further. This is much worse than the solution I use for travel in the Netherlands, where the NS (Dutch Railways) app automatically informs me of any disruption and quickly informs me of my available options, including alternate routes.
 
-**What benefits does your current system have?**
+**What benefits does your current system have?**  
 The current system is particularly useful during the initial planning of a journey, checking my available options. It is also useful in terms of providing some information about disruption that may impact my journey, such as engineering works or a broad description of disruption. My current system has also adopted well to the COVID-19 crisis - which has resulted in a more contactless railway and frequent timetable changes. The availability of mobile tickets is particularly useful for me.
 
-**What are the drawbacks of your current system?**
+**What are the drawbacks of your current system?**  
 While the apps I currently use are good in terms of informing me about general disruption, they aren't as good at telling me when my journey has been impacted. This means that when I am impacted by disruption, I have to manually check my alternate options. The nature of a delayed journey means that I often have to spend more time worrying about issues such as contacting clients about my late arrival and is generally disruptive to my workflow. Furthermore, the current system is somewhat difficult to use when claiming my money back through Delay Repay.
 
-**Are there any particular features you feel are essential to a new system (must haves)?**
+**Are there any particular features you feel are essential to a new system (must haves)?**  
 The most important thing for me is having a solution that is able to remove the majority of the manual work that is required when re-routing a journey. Ideally, I would like a solution that notifies me in real-time if there is any disruption to my journey, before providing me with alternative options. I should then be able to choose from these options before being navigated on the new journey. It would also be good to have information about stations that aren't on my route - particularly during circumstances that involve tight connections.
 
 I will provide you with an example journey after the meeting to show you what I mean about alternative options - ideally, they should not just be those available through normal journey planners but give me tight connections as options too.
 
-**Are there any features that you feel would improve the system but do not require? (nice to haves)**
+**Are there any features that you feel would improve the system but do not require? (nice to haves)**   
 As I mentioned before, I often spend a disproportinate amount of time having to claim back tickets through Delay Repay schemes. It would be beneficial if it was able to provide the information necessary for a Delay Repay claim, and if possible make the claim automatically. It would also be useful if the app was able to inform others about the progress of my journey if needed - for example, if I was visiting a client and would be at least 15 minutes late then it would be good if the client could be emailed about this, or even informed through the app itself.
 
 Another potentially useful feature is information about quicker methods than rail - for example, it can be quicker to take the bus if a train to Barrow is cancelled. I do appreciate that this may involve much greater complexity - but it would certainly be nice to have!
 
-**How would you envisage using this new system? (web app / mobile app?)**
+**How would you envisage using this new system? (web app / mobile app?)** 
 Ideally, either an app or through a webpage. There definitely should be notifications on my phone about any changes to the journey. 
 
-**Do you envisage a need to connect this system with other corporate services?**
+**Do you envisage a need to connect this system with other corporate services?**  
 I use Google Workspace for managing my email services. If you were able to integrate the emailing of clients that I discussed earlier, it would be good if this was done directly through my work account. I'd also appreciate it if the app was able to automatically create a calendar appointment when I input my journey. 
 
-**Is there anything else you would like to add?**
+**Is there anything else you would like to add?** 
 I would highly recommend that you look at the NS app that I mentioned before - it pretty much shows the majority of what I'd want to see in your final solution.
 
 ### Current System
@@ -94,9 +94,11 @@ In this scenario, it is logical to plan for the second option but be prepared to
 
 **Storage:**
 
+### Data Dictionary
 
 
-### Data Flow Diagrams
+### Data Flow Diagram
+
 
 
 ## Proposed Solution
