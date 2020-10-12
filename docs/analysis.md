@@ -39,7 +39,7 @@ Ideally, either an app or through a webpage. There definitely should be notifica
 **Do you envisage a need to connect this system with other corporate services?**  
 I use Google Workspace for managing my email services. If you were able to integrate the emailing of clients that I discussed earlier, it would be good if this was done directly through my work account. I'd also appreciate it if the app was able to automatically create a calendar appointment when I input my journey. 
 
-**Is there anything else you would like to add?** 
+**Is there anything else you would like to add?**   
 I would highly recommend that you look at the NS app that I mentioned before - it pretty much shows the majority of what I'd want to see in your final solution.
 
 ### Current System
@@ -94,12 +94,25 @@ In this scenario, it is logical to plan for the second option but be prepared to
 
 **Storage:**
 
+### Entity Relationship Diagram
+
+
 ### Data Dictionary
 
 
-### Data Flow
-**Context Diagram (Level 0)**
+### Data Flow   
+To help me visualise the flow of data within the system, I have created a series of data flow diagrams. This will also help me identify areas that could be optimised.
 
+**Current System - Level 0**   
+![DFD Level 0](https://github.com/agentsquash/nea-traindisruptionapp/blob/master/docs/assets/DFD%20Level%200.png)
+
+The current system is relatively simple. The checking of journey progress is typically done through the Trainline mobile app, as is 'Find Routing'. I do not envisage the program becoming more complex for the user at the point of use - however, there will be additional functionality added to reduce the need for the user to request data.
+
+As the current system abstracts away the majority of information, there is no need for further detailed DFDs with regards to it.
+
+**Proposed Solution - Level 0**
+
+**Proposed Solution - Level 1**
 
 
 
