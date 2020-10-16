@@ -96,6 +96,7 @@ In this scenario, it is logical to plan for the second option but be prepared to
 
 ### Entity Relationship Diagram
 ![ERD](./assets/ERD.svg)
+User represents the end-user using the program. One user can have many journeys using the application, having a one-to-many relationship. Each journey using the application will have at least one service, and due to the nature of the application will likely involve many services - again giving a one to many relationship. Each service will call at multiple stations, which will be treated by the application as a data point to determine disruption. This is also representative of a one-to-many relationship.
 
 ### Data Dictionary
 
