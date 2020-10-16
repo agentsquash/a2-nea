@@ -95,7 +95,7 @@ In this scenario, it is logical to plan for the second option but be prepared to
 **Storage:**
 
 ### Entity Relationship Diagram
-
+![ERD](./assets/ERD.svg)
 
 ### Data Dictionary
 
