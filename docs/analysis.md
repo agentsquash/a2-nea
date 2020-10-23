@@ -51,10 +51,13 @@ During the interview, Mr Ashley pointed out the NS (Dutch Railways) app as an ex
 ## Analysis of Investigation
 
 ### Interview Analysis
-The interview has provided me with several useful points of information that will contribute greatly in developing a proposed solution. Overall, the system needs to be
+The interview has provided me with several useful points of information that will contribute greatly in developing a proposed solution. There are a lot of features that could be implemented to improve the experience of the application that we discussed; however, it is clear that the main focus of the program will be on dynamic journey planning. I also intend to work on some form of Delay Repay information system to help the client, and integration with the client's Google Workspace setup.
 
-### Further Research
-During my initial interview, Mr Ashley pointed out his desire for a service which would enable him to automatically claim money back for delays caused during the journey through the Delay Repay scheme. 
+// Talk about NS app features - what is attainable.
+
+// Talk about Delay Repay - automatic not possible, but information is possible
+
+// Talk about OAuth integration, emails and calendar appointments.
 
 ### Analysis of Example Journey
 Following the interview, Mr Ashley has kindly provided me with an example of his typical journey from Ulverston to Chester. This is illustrated in the diagram below:
@@ -82,7 +85,7 @@ The other two reroutes both involve changing at Warrington Bank Quay (WBQ) - wit
 
 In this scenario, it is logical to plan for the second option but be prepared to take the third. These reroutes, however, deliver a massive time saving over the most obvious reroute - with a theoretical maximum delay of 16 minutes routing via Warrington compared to 60 minutes via Crewe. These time savings highlight the benefits of rerouting - however, this process is often not easy when travelling.
 
-
+// Second scenario - disruption enroute.
 
 
 ### Data Flow Overview
@@ -97,7 +100,6 @@ In this scenario, it is logical to plan for the second option but be prepared to
 ### Entity Relationship Diagram
 ![ERD](./assets/ERD.svg)    
 User represents the end-user using the program. One user can have many journeys using the application, having a one-to-many relationship. Each journey using the application will have at least one service, and due to the nature of the application will likely involve many services - again giving a one to many relationship. Each service will call at multiple stations, which will be treated by the application as a data point to determine disruption. This is also representative of a one-to-many relationship.
-
 
 ### Data Flow   
 To help me visualise the flow of data within the system, I have created a series of data flow diagrams. This will also help me identify areas that could be optimised.
@@ -137,3 +139,5 @@ At the server side, most information is not stored locally but rather fetched as
 Unfortunately, it is unviable to obtain access to the National Rail Journey Planning system due to cost. This means that the journey planning solution will have to be manually maintained, and as such may lack fully up to date information on all stations on the National Rail network, such as changed MCTs and new alternative routings. Furthermore, due to time constraints, my solution will only have limited integration with other forms of public transport which may be more viable options (such as taking a bus). 
 The system will also be unable to determine whether the users ticket is valid for the routing taken, as it is not possible to fully integrate ticketing restrictions within the time frame of the project. However, due to the focus of the solution largely being on finding new journeys during disruption (where ticket restrictions are typically relaxed following missing the original service) this issue in particular should have minimal impact on the usability of the solution.
 // Not here? // Mr Ashley has also stated that while he would like to see the implementation of automatic delay repay within the solution, it would be acceptable if the application only provided the information necessary for the claim. Further research into this has highlighted the unsuitability of many TOCs web services for automatic solution-based claims - typically requiring registration. The introduction of this feature would also require the storage of payment information, which would introduce new complexity to the solution.
+
+## Objectives
