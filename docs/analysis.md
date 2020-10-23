@@ -95,10 +95,8 @@ In this scenario, it is logical to plan for the second option but be prepared to
 **Storage:**
 
 ### Entity Relationship Diagram
-![ERD](./assets/ERD.svg)
+![ERD](./assets/ERD.svg)    
 User represents the end-user using the program. One user can have many journeys using the application, having a one-to-many relationship. Each journey using the application will have at least one service, and due to the nature of the application will likely involve many services - again giving a one to many relationship. Each service will call at multiple stations, which will be treated by the application as a data point to determine disruption. This is also representative of a one-to-many relationship.
-
-### Data Dictionary
 
 
 ### Data Flow   
@@ -118,6 +116,17 @@ As the current system abstracts away the majority of information, there is no ne
 
 
 ## Proposed Solution
+
+### Data Dictionary
+**User Information**
+| Field            | Data Type | Example                                                            | Validation                                                                                                        |
+|------------------|-----------|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| Username         | CHAR(20)  | "agentsquash"                                                      | Username should be less than 20 characters; Username should be alphanumeric;                                      |
+| isOAuth          | BOOLEAN   | FALSE                                                              | If user is authenticating via Google; should be TRUE. If user is using an app specific account - should be FALSE. |
+| Password         | CHAR(64)  | "9e66a118b9a0fb8cada5eb0f357806a21cc067fa4b9d9f76eb9773a24e022438" | Password should be 64 characters long.                                                                            |
+| OAuthAccessToken | CHAR(256) |                                                                    |                                                                                                                   |
+| Email            | CHAR(320) | "pizza@gmail.com"                                                  | See https://tools.ietf.org/html/rfc3696#section-3                                                                 |
+| Admin            | BOOLEAN   | TRUE                                                               | TRUE = Grant admin rights. FALSE = Normal user.                                                                   |
 
 ### Data Volumes
 I intend to provide the solution as a website for the end-user, necessitating minimal storage space for the end user.
