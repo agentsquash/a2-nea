@@ -145,6 +145,11 @@ I have determined there is no need for a Level 1 DFD for the current system as I
 
 ## Proposed Solution
 
+### Flow Diagram
+![Flow Diagram](./assets/Flow%20Chart.svg)
+
+To better understand what needs to be included in the program, I have created a flow diagram that illustrates the journey checking and login features of the program. This provides a high level overview of how the program will work.
+
 ### Data Dictionary
 **User Information**
 | Field            | Data Type | Example                                                            | Validation                                                                                                        |
