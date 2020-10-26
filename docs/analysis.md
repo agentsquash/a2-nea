@@ -131,7 +131,7 @@ User represents the end-user using the program. One user can have many journeys 
 To help me visualise the flow of data within the system, I have created a series of data flow diagrams (DFD). This will also help me identify areas that could be optimised.
 
 **Current System - Level 0**   
-![DFD Level 0](https://github.com/agentsquash/nea-traindisruptionapp/blob/master/docs/assets/DFD%20Level%200.png)
+![DFD Level 0](./assets/DFD%20Level%200.png)
 
 The current system is relatively simple. The checking of journey progress is typically done through the Trainline mobile app, as is 'Find Routing'. I do not envisage the program becoming more complex for the user at the point of use - however, there will be additional functionality added to reduce the need for the user to request data.
 
@@ -151,10 +151,53 @@ I have determined there is no need for a Level 1 DFD for the current system as I
 |------------------|-----------|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
 | Username         | CHAR(20)  | "agentsquash"                                                      | Username should be less than 20 characters; Username should be alphanumeric;                                      |
 | isOAuth          | BOOLEAN   | FALSE                                                              | If user is authenticating via Google; should be TRUE. If user is using an app specific account - should be FALSE. |
-| Password         | CHAR(64)  | "9e66a118b9a0fb8cada5eb0f357806a21cc067fa4b9d9f76eb9773a24e022438" | Password should be 64 characters long.                                                                            |
-| OAuthAccessToken | CHAR(256) |                                                                    |                                                                                                                   |
-| Email            | CHAR(320) | "pizza@gmail.com"                                                  | See https://tools.ietf.org/html/rfc3696#section-3                                                                 |
+| Password         | CHAR(64)  | "9e66a118b9a0fb8cada5eb0f357806a21cc067fa4b9d9f76eb9773a24e022438" | Password should be 64 characters long. Passwords are hashed and salted.                                                                           |
+| OAuthAccessToken | CHAR(256) |                                                                    null|                                                                                                                   |
+| Email            | CHAR(320) | "john.appleseed@icloud.com"                                                  | See https://tools.ietf.org/html/rfc3696#section-3                                                                 |
 | Admin            | BOOLEAN   | TRUE                                                               | TRUE = Grant admin rights. FALSE = Normal user.                                                                   |
+
+This table will be used to store end user login information. There will be a class which encapsulates all authentication behaviours and interfaces with the website. The class will contain OAuth integration to allow users to use their Google account to login instead of directly creating an account on the system. Alternatively, users can create an account by providing a username, password (which will be hashed and has a salt) and email address. This table also handles User Access Levels - where an admin user is able to access usage statistics for all users (anonymised) while user access grants users only access to their data.
+
+**Journey**
+| Field             | Datatype | Example                | Validation                                                                                                                     |
+|-------------------|----------|------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| departureCRS      | CHAR(3)  | "ULV"                  | Must be valid National Rail routing point. When a station name is entered, it will be converted using the National Rail API.   |
+| arrivalCRS        | CHAR(3)  | "CTR"                  | Must be a valid National Rail routing point. When a station name is entered, it will be converted using the National Rail API. |
+| planDepTime       | DateTime | 04/12/2002 04:38:00 PM | Time should be in the future when creating a journey.                                                                          |
+| actDepTime        | DateTime | 04/12/2002 04:39:00 PM | Time should be in past when entered.                                                                                           |
+| planArrTime       | DateTime | 04/12/2002 05:38:00 PM | Time should be in the future when creating a journey.                                                                          |
+| actArrTime        | DateTime | 04/12/2002 06:39:00 PM | Time should be in past when entered.                                                                                           |
+| delayRepayEligble | BOOLEAN  | TRUE                   | If actArrTime >= planArrTime+15, then True                                                                                     |
+| delayRepayBand    | INT      | 2                      | Check that band is equal to delay incurred.                                                                                    |
+| delayRepayTOC     | CHAR(2)  | "VT"                   | Company that caused the delay.                                                                                                 |
+| service_1(-10)    | VARCHAR(36)  | _I-TViCwPv8uNOTk-oNeJQ | Service name is the same as the web-safe Darwin GUID.                                                                          |
+
+This class contains the journey information that will be stored locally by the system. It is used in the creation of new journeys within the system, and will also be used to determine whether a journey is eligble for Delay Repay. The class also the unique service identifier as provided by the National Rail Darwin API to allow the identification of unique services by the application. The information contained within the Journey class will be stored long term by the system to provide journey history.
+
+**Progress Class**      
+The Progress Class is created dynamically by the application when a journey is in progress. It consists of the following data:
+| Field          | DataType    | Example                | Validation                                                               |
+|----------------|-------------|------------------------|--------------------------------------------------------------------------|
+| service_guid   | VARCHAR(36) | _I-TViCwPv8uNOTk-oNeJQ | The Darwin GUID of the current service. Set to NULL if connection = TRUE |
+| connection     | BOOLEAN     | FALSE                  | Set to TRUE if a connection is in progress.                              |
+| nextCRS        | CHAR(3)     | "BIF"                  | Must be a valid National Rail routing point.                             |
+| nextTimetable  | DateTime    | 04/12/2002 05:38:00 PM | Matches a timetable entry for the CRS                                    |
+| nextETA        | DateTime    | 04/12/2002 05:42:00 PM | Matches the Darwin feed ETA.                                             |
+| lastCRS        | CHAR(3)     | "ROO"                  | Must be a valid National Rail routing point.                             |
+| lastTimetable  | DateTime    | 04/12/2002 05:32:00 PM | Matches a timetable entry for the CRS                                    |
+| lastETA        | DateTime    | 04/12/2002 05:36:00 PM | Matches the Darwin feed actual arrival.                                  |
+| currentDelay   | INT         | 5                      | Difference between nextTimetable and nextETA                             |
+| intervene      | BOOLEAN     | TRUE                   | If currentDelay is below MCT, then TRUE                                  |
+| interveneLevel | INT         | 2                      | Defined in Design.                                                       |
+
+The Progress Class handles the real time disruption handling part of the system. It tracks the progress of the current journey against the planned routing, and determines whether there is a need to intervene, and the level of intervention (notification) required. At this stage in development, there are provisionally four Intervention Levels.
+
+* -1: No intervention required.
+* 0: Unofficial/tight connection. No rerouting deemed necessary.
+* 1: Unofficial/tight connection. Information about rerouting/connection available to user.
+* 2: Missed connection. Journey options shown to user.
+
+The class will contain algorithms that respond to the intervention level and provide the necessary information for the end user.
 
 ### Data Volumes
 I intend to provide the solution as a website for the end-user, necessitating minimal storage space for the end user.
