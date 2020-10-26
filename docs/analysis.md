@@ -45,9 +45,6 @@ I would highly recommend that you look at the NS app that I mentioned before - i
 ### Current System
 Currently, Mr Ashley books his journeys on the 'Trainline' app prior to the journey - but typically does not have time to check the status of his journey. As such, delays are often realised upon arriving at the station or during the journey. If the delay is sufficient enough to cause a missed connection, many of his journeys have the potential to have quicker arrival at the destination via a different routing - meaning that he often replans his whole journey from that point. However, when involved in disruption, this does not always enable him to achieve the earliest arrival at his destination due to the real time nature of delays.
 
-### Research
-During the interview, Mr Ashley pointed out the NS (Dutch Railways) app as an example of a suitable solution. 
-
 ## Analysis of Investigation
 
 ### Interview Analysis
@@ -79,14 +76,47 @@ In this example, there is still the possibility of Mr Ashley being able to conne
 
 There are three viable reroutes for this journey - one following the original routing via Crewe, and two via Warrington Bank Quay.
 
-The first rerouting, via Crewe, is the most obvious. It would involve joining the next service to Crewe, then the next service to Chester. This journey is indeed the one that many people would follow in this situation - however, it causes the most delay at 60 minutes while also involving a longer wait at Preston due to the timetabling of Crewe services.
+The first rerouting, via Crewe, is the most obvious. It would involve joining the next service to Crewe, then the next service to Chester. This journey is indeed the one that many people would follow in this situation, but is in fact the longest; causing a 60 minute delay, and a longer wait at Preston.
 
-The other two reroutes both involve changing at Warrington Bank Quay (WBQ) - with the difference between the routings being the connection time at Warrington. In the case of the second option, there is a four minute connection time at WBQ - below the minimum connection time for the station, but a cross platform interchange and as such very reasonable to plan for. It does not, however, allow for further disruption due to the tight/unofficial connection. The third reroute resolves this issue with a 17 minute connection time at WBQ - above the minimum five minutes, and allowing for further disruption.
+The other two reroutes involve changing at Warrington Bank Quay (WBQ) - with the difference between the routings being the connection time at WBQ. In the case of the second option, there is a four minute connection time at WBQ. This is below the MCT for the station of 5 minutes - and as such, is not classified as an official journey option and would not be displayed on normal journey planners. However, this does not take into account the cross platform nature of the interchange - and as such, this reroute, while being an unofficial connection, is in fact a viable option. In the case of further disruption, however, it is highly likely that there may be a missed connection.
 
-In this scenario, it is logical to plan for the second option but be prepared to take the third. These reroutes, however, deliver a massive time saving over the most obvious reroute - with a theoretical maximum delay of 16 minutes routing via Warrington compared to 60 minutes via Crewe. These time savings highlight the benefits of rerouting - however, this process is often not easy when travelling.
+The third option is more resillient, with a 17 minute connection time at WBQ - above the minimum five minutes, which in turn provides more time in case of further disruption.
 
-// Second scenario - disruption enroute.
+As such, it is logical to plan for the second option but be prepared to take the third. However, there are a few key points we can take from our analysis of this scenario:
+* **The most obvious routing is often not the quickest.** In the case of this sample, we deliver a maximum delay (assuming no significant further disruption) of 16 minutes routing via WBQ, and can deliver an 8 minute maximum delay if there is no disruption from Preston.
+* **The most efficient routings aren't always obvious.** The quickest routing, with a delay of 8 minutes, would not be displayed using a journey planner due to the unofficial connection at WBQ. This shows that while journey planners are good for initial planning, the usage of baseline MCTs can actually cause further delay as users aren't informed of potential quicker options.
 
+#### Example 2: Disruption while enroute
+*Mr Ashley boards the 17:04 service from Ulverston, which arrives at Preston as scheduled. He then boards the 18:17 service to Crewe as scheduled. At Wigan North Western, police are called due to a disturbance in the shop. This causes a 23 minute delay to the service, resulting in an estimated arrival time into Crewe of 19:20.*
+
+In this example, there is again still the potential to follow the originally intended routing and arrive at Chester as scheduled. However, Crewe is a large station, and has a 10 minute MCT. As such, it is reasonable to assume that the connection is potentially not possible, especially when unfamiliar with the station - which is shown in the diagram below.
+
+![Crewe](./assets/Crewe.svg)
+*Diagram copyright National Rail Enquiries - used under fair use.*
+
+The diagram above also includes the routing from Platform 5 to Platform 9, the timetabled platforms for these two services. It is at this point where it is important to make the distinction between a connection which is 'potentially not possible' and 'impossible'. While 4 minutes is a very tight connection at a large station like Crewe, for an experienced traveller it may still be very possible.
+Indeed, speaking to Mr Ashley, he estimates his standard connection time at Crewe is about 5 minutes anyway. It is also possible possible to make the connection process quicker through forward planning - for example, knowing which doors to leave the train at to access the bridge quickly.
+
+Considering these factors, two potential options become apparent following the delay at Wigan:
+- **Continue to Crewe:** while a tight connection, still potentially possible. Joining the original service would be most likely to allow an on time arrival. However, the tight nature of the connection may not be suited for an inexperienced traveller.
+- **Leave the train at WBQ:** This would ensure that an official connection would be possible (to the 19:26 service mentioned in Example 1) - however, potentially causing an unneccessary 8 minutes of delay.      
+
+The decision to change services is hardly clear cut, and depends on many factors and a lot of 'what if?' scenarios. The service to Crewe may make up time before arriving, allowing a more relaxed connection - equally, there is the chance that the service may be delayed further. It may also be difficult for a passenger travelling to find out information about available services from Warrington in time.
+
+It is in this situation that having data accessible to determine the likelihood of further delay, or less delay, would be helpful. Equally, having the journey options available at WBQ would also be beneficial. These are both issues that the system proposed would be able to assist with - looking at past performance data of the services involved, and being able to display information to the user to help make an informed decision.
+
+We can therefore take the following points from our analysis of this journey:
+* **Making a decision during disruption is not clear cut.** It is difficult to make a decision that is not simply 'chancing' it while travelling - it is near impossible to check past performance data on the move, while finding alternative journey options while travelling may also be difficult.
+* **Human factors play a major role.** Someone who is inexperienced at travelling may find a tight connection much more difficult than an experienced traveller who commutes on a route weekly. As such, it is difficult for a system to accurately determine the probability in situations such as this example.
+
+#### Conclusion
+Overall, looking into the example journey and the different circumstances that can impact it have given me both ideas for the solution while also presenting some problems, most notably when involving tight connections where the users actions are the biggest influence. Before starting the design of the program, I will research minimum connection times further to see what assumptions I can reasonably make, and which ones are more nuanced and require direct user intervention.
+
+### Further research
+
+### Entity Relationship Diagram
+![ERD](./assets/ERD.svg)    
+User represents the end-user using the program. One user can have many journeys using the application, having a one-to-many relationship. Each journey using the application will have at least one service, and due to the nature of the application will likely involve many services - again giving a one to many relationship. Each service will call at multiple stations, which will be treated by the application as a data point to determine disruption. This is also representative of a one-to-many relationship.
 
 ### Data Flow Overview
 **Input:**
@@ -97,19 +127,15 @@ In this scenario, it is logical to plan for the second option but be prepared to
 
 **Storage:**
 
-### Entity Relationship Diagram
-![ERD](./assets/ERD.svg)    
-User represents the end-user using the program. One user can have many journeys using the application, having a one-to-many relationship. Each journey using the application will have at least one service, and due to the nature of the application will likely involve many services - again giving a one to many relationship. Each service will call at multiple stations, which will be treated by the application as a data point to determine disruption. This is also representative of a one-to-many relationship.
-
 ### Data Flow   
-To help me visualise the flow of data within the system, I have created a series of data flow diagrams. This will also help me identify areas that could be optimised.
+To help me visualise the flow of data within the system, I have created a series of data flow diagrams (DFD). This will also help me identify areas that could be optimised.
 
 **Current System - Level 0**   
 ![DFD Level 0](https://github.com/agentsquash/nea-traindisruptionapp/blob/master/docs/assets/DFD%20Level%200.png)
 
 The current system is relatively simple. The checking of journey progress is typically done through the Trainline mobile app, as is 'Find Routing'. I do not envisage the program becoming more complex for the user at the point of use - however, there will be additional functionality added to reduce the need for the user to request data.
 
-As the current system abstracts away the majority of information, there is no need for further detailed DFDs with regards to it.
+I have determined there is no need for a Level 1 DFD for the current system as I am unable to accurately determine the data flow to that level.
 
 **Proposed Solution - Level 0**
 
