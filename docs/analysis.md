@@ -280,7 +280,7 @@ The system will also be unable to determine whether the users ticket is valid fo
 7. The system **must** provide up to date journey information at any connection point.
    1. The system **must** provide information regarding the next train on the journey, and platform information.
    2. The system should include additional information such as train length and other specific service information.
-      1. If the service has a seat reservation **and** there are defined waiting points (such as on the West Coast Main Line), the user should be told where to stand for the easiest access to their next service.
+      1. If the service has a seat reservation **and** there are defined station boarding points (such as on the West Coast Main Line), the user should be told where to stand for the easiest access to their next service.
    3. If the connection is deemed 'tight' (Intervention Level 0/1), the application should attempt to provide additional information where possible to allow the fastest connection.
 8. The system **must** inform the user if the journey is delayed enough to become a tight connection.
    1. The system **must** provide alternative journey opportunities if it determines that a tight connection may not be possible.
