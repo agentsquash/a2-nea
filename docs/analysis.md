@@ -152,35 +152,38 @@ To better understand what needs to be included in the program, I have created a 
 
 ### Data Dictionary
 **User Information**
-| Field            | Data Type | Example                                                            | Validation                                                                                                        |
-|------------------|-----------|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| Username         | CHAR(20)  | "agentsquash"                                                      | Username should be less than 20 characters; Username should be alphanumeric;                                      |
-| isOAuth          | BOOLEAN   | FALSE                                                              | If user is authenticating via Google; should be TRUE. If user is using an app specific account - should be FALSE. |
-| Password         | CHAR(64)  | "9e66a118b9a0fb8cada5eb0f357806a21cc067fa4b9d9f76eb9773a24e022438" | Password should be 64 characters long. Passwords are hashed and salted.                                                                           |
-| OAuthAccessToken | CHAR(256) |                                                                    null|                                                                                                                   |
-| Email            | CHAR(320) | "john.appleseed@icloud.com"                                                  | See https://tools.ietf.org/html/rfc3696#section-3                                                                 |
-| Admin            | BOOLEAN   | TRUE                                                               | TRUE = Grant admin rights. FALSE = Normal user.                                                                   |
+| Field            | Data Type | Example                                                            | Validation                                                                                                                    |
+|------------------|-----------|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| UserID           | INT(16)   | 1                                                                  | Must be increment.                                                                                                            |
+| Username         | CHAR(64)  | "agentsquash"                                                      | Username should be less than 20 characters if a local account; Username should be alphanumeric;                               |
+| isOAuth          | BOOLEAN   | FALSE                                                              | If user is authenticating via Google; should be TRUE. If user is using an app specific account - should be FALSE.             |
+| Password         | CHAR(64)  | "9e66a118b9a0fb8cada5eb0f357806a21cc067fa4b9d9f76eb9773a24e022438" | Password should be 64 characters long. Passwords are hashed and salted. If authenticating through OAuth, this should be null. |
+| OAuthAccessToken | CHAR(256) | null                                                               |                                                                                                                               |
+| Email            | CHAR(320) | "john.appleseed@icloud.com"                                        | See https://tools.ietf.org/html/rfc3696#section-3                                                                             |
+| accessLevel      | INT(1)    | 2                                                                  | Between 0 and 2.                                                                                                              |                                                                |
 
 This table will be used to store end user login information. There will be a class which encapsulates all authentication behaviours and interfaces with the website. The class will contain OAuth integration to allow users to use their Google account to login instead of directly creating an account on the system. Alternatively, users can create an account by providing a username, password (which will be hashed and has a salt) and email address. This table also handles User Access Levels - where an admin user is able to access usage statistics for all users (anonymised) while user access grants users only access to their data.
 
 **Journey**
-| Field             | Datatype | Example                | Validation                                                                                                                     |
-|-------------------|----------|------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| departureCRS      | CHAR(3)  | "ULV"                  | Must be valid National Rail routing point. When a station name is entered, it will be converted using the National Rail API.   |
-| arrivalCRS        | CHAR(3)  | "CTR"                  | Must be a valid National Rail routing point. When a station name is entered, it will be converted using the National Rail API. |
-| planDepTime       | DateTime | 04/12/2002 04:38:00 PM | Time should be in the future when creating a journey.                                                                          |
-| actDepTime        | DateTime | 04/12/2002 04:39:00 PM | Time should be in past when entered.                                                                                           |
-| planArrTime       | DateTime | 04/12/2002 05:38:00 PM | Time should be in the future when creating a journey.                                                                          |
-| actArrTime        | DateTime | 04/12/2002 06:39:00 PM | Time should be in past when entered.                                                                                           |
-| delayRepayEligble | BOOLEAN  | TRUE                   | If actArrTime >= planArrTime+15, then True                                                                                     |
-| delayRepayBand    | INT      | 2                      | Check that band is equal to delay incurred.                                                                                    |
-| delayRepayTOC     | CHAR(2)  | "VT"                   | Company that caused the delay.                                                                                                 |
-| service_1(-10)    | VARCHAR(36)  | _I-TViCwPv8uNOTk-oNeJQ | Service name is the same as the web-safe Darwin GUID.                                                                          |
+| Field             | Datatype    | Example                | Validation                                                                                                                     |
+|-------------------|-------------|------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| JourneyID         | INT(32)     | 12                     |                                                                                                                                |
+| UserID            | INT(16)     | 1                      |                                                                                                                                |
+| departureCRS      | CHAR(3)     | "ULV"                  | Must be valid National Rail routing point. When a station name is entered, it will be converted using the National Rail API.   |
+| arrivalCRS        | CHAR(3)     | "CTR"                  | Must be a valid National Rail routing point. When a station name is entered, it will be converted using the National Rail API. |
+| planDepTime       | DateTime    | 04/12/2002 04:38:00 PM | Time should be in the future when creating a journey.                                                                          |
+| actDepTime        | DateTime    | 04/12/2002 04:39:00 PM | Time should be in past when entered.                                                                                           |
+| planArrTime       | DateTime    | 04/12/2002 05:38:00 PM | Time should be in the future when creating a journey.                                                                          |
+| actArrTime        | DateTime    | 04/12/2002 06:39:00 PM | Time should be in past when entered.                                                                                           |
+| delayRepayEligble | BOOLEAN     | TRUE                   | If actArrTime >= planArrTime+15, then True                                                                                     |
+| delayRepayBand    | INT         | 2                      | Check that band is equal to delay incurred.                                                                                    |
+| delayRepayTOC     | CHAR(2)     | "VT"                   | Company that caused the delay.                                                                                                 |
+| service_1(-10)    | VARCHAR(36) | _I-TViCwPv8uNOTk-oNeJQ | Service name is the same as the web-safe Darwin GUID.                                                                          |
 
 This class contains the journey information that will be stored locally by the system. It is used in the creation of new journeys within the system, and will also be used to determine whether a journey is eligble for Delay Repay. The class also the unique service identifier as provided by the National Rail Darwin API to allow the identification of unique services by the application. The information contained within the Journey class will be stored long term by the system to provide journey history.
 
-**Progress Class**      
-The Progress Class is created dynamically by the application when a journey is in progress. It consists of the following data:
+**Service Progress Class**      
+The Service Progress Class is created dynamically by the application when a journey is in progress. It consists of the following data:
 | Field          | DataType    | Example                | Validation                                                               |
 |----------------|-------------|------------------------|--------------------------------------------------------------------------|
 | service_guid   | VARCHAR(36) | _I-TViCwPv8uNOTk-oNeJQ | The Darwin GUID of the current service. Set to NULL if connection = TRUE |
@@ -195,7 +198,7 @@ The Progress Class is created dynamically by the application when a journey is i
 | intervene      | BOOLEAN     | TRUE                   | If currentDelay is below MCT, then TRUE                                  |
 | interveneLevel | INT         | 2                      | Defined in Design.                                                       |
 
-The Progress Class handles the real time disruption handling part of the system. It tracks the progress of the current journey against the planned routing, and determines whether there is a need to intervene, and the level of intervention (notification) required. At this stage in development, there are provisionally four Intervention Levels.
+The Service Progress Class handles the real time disruption handling part of the system. It tracks the progress of the current journey against the planned routing, and determines whether there is a need to intervene, and the level of intervention (notification) required. At this stage in development, there are provisionally four Intervention Levels.
 
 * -1: No intervention required.
 * 0: Unofficial/tight connection. No rerouting deemed necessary.
@@ -205,9 +208,24 @@ The Progress Class handles the real time disruption handling part of the system.
 The class will contain algorithms that respond to the intervention level and provide the necessary information for the end user.
 
 ### Data Volumes
-I intend to provide the solution as a website for the end-user, necessitating minimal storage space for the end user.
+Due to the nature of the National Rail timetable, the amount of data that will be provided and used by the system at any one time is variable. At the time of analysis in November 2020, the timetable is changing at a particularly high rate due to service changes as a result of the COVID-19 pandemic. As such, it is impossible to provide a fully accurate estimate of the amount of data that will be used by the system as a whole, as the timetable is a core feature of the application that is fetched on a regular basis.
 
-At the server side, most information is not stored locally but rather fetched as necessary from the National Rail/TFL APIs. 
+However, it is still possible to make some estimates about the size of the application in terms of persistent data that is stored long term. It is also possible to state that the size of the system for the end user will be minimal as the system will be accessed as a web app.
+
+In terms of the server side storage, it is possible to make estimates to the size of some aspects of the program.
+
+#### User Information
+The User Information table consists of 7 elements: userID, username, password, email, admin, isOAuth and an OAuthAccessToken. The usage of OAuth means that there are two potential scenarios for data storage:
+- a user authenticating using OAuth
+- a user authenticating using a local system account
+
+If a user choses to authenticate using OAuth (Google Sign In), then five fields are used: userID, username, email, isOAuth, OAuthAccessToken and Admin. The username will be stored in a UTF-8 format, annd have a maximum length of 64 characters. This results in a maximum size of 64 bytes (512 bits). The email field has a maximum length of 320 characters. Again using UTF-8, this results in a maximum size of 320 bytes (2560 bits), and a cumulative total of 384 bytes (3072 bits). Two boolean variables are used in the storage of an OAuth account - isOAuth and Admin. These both take up an additional bit of storage each. The userID is stored as a 16 bit integer. To store a 16 bit nWhen authenticating using OAuth, an additional Access Token is used. This will be stored as a UTF-8 sintrg, taking up 256 bytes (2048 bits) of storage. In total, this results in a size of 649.5 bytes (5196 bits) per OAuth user stored by the application.
+
+If a user choses to authenticate using a local account, then five fields are used: username, email, isOAuth, Admin and password. The username, email, userID, isOAuth and Admin fields both take up the same space as an OAuth user - however, instead of using a 256 character access token, a 64 bit hashed (and with a salt) password is used. This password is stored in a UTF-8 format, resulting in a size of 64 bytes (512 bits). This results in a total size of 3660 bits (or 457.5 bytes) in the worst case scenario.
+
+Assuming of the application by 20 users, with the majority (90%) choosing to authenticate via OAuth, this results in a storage size of 100,848 bits (12.6KB).
+
+At this point in development, it is not possible to provide an accurate estimate for the size of the journey and service classes, due to their highly variable nature.
 
 ### Acceptable Limitations
 Unfortunately, it is unviable to obtain access to the National Rail Journey Planning system due to cost. This means that the journey planning solution will have to be manually maintained, and as such may lack fully up to date information on all stations on the National Rail network, such as changed MCTs and new alternative routings. Furthermore, due to time constraints, my solution will only have limited integration with other forms of public transport which may be more viable options (such as taking a bus). 
@@ -215,3 +233,61 @@ The system will also be unable to determine whether the users ticket is valid fo
 // Not here? // Mr Ashley has also stated that while he would like to see the implementation of automatic delay repay within the solution, it would be acceptable if the application only provided the information necessary for the claim. Further research into this has highlighted the unsuitability of many TOCs web services for automatic solution-based claims - typically requiring registration. The introduction of this feature would also require the storage of payment information, which would introduce new complexity to the solution.
 
 ## Objectives
+
+**Account Authentication, Integration and History**
+1. The user **must** not be able to access the system without logging in.
+2. The user **must** have the ability to create an account to access the system.
+   1. The user should be able to use their Google Workspace account to create a system account through Google Sign-In.
+   2. The user **must** be able to create a local account on the system by providing a username, email address and password. 
+      1. Passwords for local accounts **must** be stored securely (hashed and with a salt)
+      2. Usernames **must** be entered in a valid format (alphanumeric, length less than or equal to 20)
+      3. Email addresses **must** be entered in a valid format (as per RFC3696)
+      4. Email addresses should be authenticated through a verification email.
+   3. All new accounts created **must** be 'user' accounts, without administrator access.
+3. The user **must** have the ability to login to the system.
+   1. The user should be able to login using their Google Workspace account through Google Sign-In.
+   2. The user **must** be able to login using their local system account by providing a correct username/email address and password combination.
+4. Users **must** have the ability to reset a forgotten password.
+   1. The users account ownership should be verified through a verification email.
+   2. The users previous password **must** be overwritten, and never provided to the user.
+   3. The user **must** receive confirmation that their password has been reset.
+5. Once logged in, the user **must** be able to see information about previous and new journeys.
+   1. Users should be able to see their journey history.
+   2. Users **must** be able to create a new journey.
+   3. Users should be able to perform basic administrative tasks.
+      1. Local system accounts should be able to link to a Google Workspace account after creation.
+      2. Local system accounts should be able to change their password.
+         1. The users account ownership should be verified through a verification email.
+         2. The users previous password should be overwritten, and never provided to the user.
+         3. The user should receive confirmation that their password has been reset.
+6. Administrators should be able to upgrade an existing accounts access level.
+
+**Journey Planning, History and Delay Repay**
+1. The user **must** have the ability to create a journey within the system.
+   1. The user **must** be able to specify a departure station by name.
+   2. The user **must** be able to specify an arrival station by name.
+   3. The user **must** be able to specify a departure time.
+   4. The user **must** be able to select a journey that meets the search criteria above.
+      1. If the journey involves a service which allows seat reservations, the user should have the option to enter these into the application.
+2. The user **must** have the ability to cancel a journey within the system.
+3. The user **must** be notified if the first service in their journey is cancelled prior to them commencing the journey in the system.
+4. The user **must** be notified if there is significant disruption impacting their planned journey prior to its commencement.
+5. The user **must** have the ability to 'start' a journey within the system.
+6. The system should provide up to date journey information at each reporting point.
+   1. This information should be provided on the website; it should not be pushed to the user.
+   2. This information should also include additional information where possible, such as train lengths and service related issues.
+7. The system **must** provide up to date journey information at any connection point.
+   1. The system **must** provide information regarding the next train on the journey, and platform information.
+   2. The system should include additional information such as train length and other specific service information.
+      1. If the service has a seat reservation **and** there are defined waiting points (such as on the West Coast Main Line), the user should be told where to stand for the easiest access to their next service.
+   3. If the connection is deemed 'tight' (Intervention Level 0/1), the application should attempt to provide additional information where possible to allow the fastest connection.
+8. The system **must** inform the user if the journey is delayed enough to become a tight connection.
+   1. The system **must** provide alternative journey opportunities if it determines that a tight connection may not be possible.
+   2. The user **must** be able to select from alternative journey opportunities if it is deemed a connection may not be possible.
+9. The system **must** provide alternative routing opportunities if the connecting service is cancelled, or the user will miss the service due to a delayed arrival.
+   1. The user **must** be able to select the alternative journey they take.
+10. The user's journey history **must** be stored by the system.
+    1.  The user should be able to access their previous journey history.
+1.  The user should be advised if a journey is delayed enough to be eligble for Delay Repay (where available)
+    1.  The user should be provided with the necessary information for a Delay Repay claim.
+    2.  The user should be redirected to the correct Train Operating Company to make their Delay Repay claim.
