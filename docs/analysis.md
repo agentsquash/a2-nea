@@ -50,11 +50,17 @@ Currently, Mr Ashley books his journeys on the 'Trainline' app prior to the jour
 ### Interview Analysis
 The interview has provided me with several useful points of information that will contribute greatly in developing a proposed solution. There are a lot of features that could be implemented to improve the experience of the application that we discussed; however, it is clear that the main focus of the program will be on dynamic journey planning. I also intend to work on some form of Delay Repay information system to help the client, and integration with the client's Google Workspace setup.
 
-// Talk about NS app features - what is attainable.
+Following the interview, I first researched the NS (Dutch Railways) app that Mr Ashley mentioned as a solution he had found worked well for him previously. When attempting to plan a journey, the app provided me with nearby stations for departure. After selecting a departure, arrival and departure time, the app gave me a list containing all available journeys. It also provided information about trains that have already departed - a feature that would be redundant in this solution due to the requirement to replan journeys.
 
-// Talk about Delay Repay - automatic not possible, but information is possible
+One feature I liked that I hadn't considered previously was the provision of additional information such as train length and type, onboard services as well as overcrowding information. Information on train length is provided in the UK by the Darwin API - making this a potential additional feature for the solution.
 
-// Talk about OAuth integration, emails and calendar appointments.
+I noted in a later discussion with Mr Ashley that the NS app does have additional functionality in terms of ticket booking - but this is outside the scope of the project. 
+
+Mr Ashley also expressed his wish to have Delay Repay, where passengers are refunded based on delays to their journey, integrated into the system and able to automatically handle claims. However, it would also be suitable if the system instead provided the information needed for the claim. When researching potential solutions to implementing Delay Repay, it became clear very early on that there is fragmentation in terms of both access available from a developers perspective and also in terms of the availability the scheme itself.
+
+As such, in terms of solution integration, it will be more focused on letting the user know when they can claim Delay Repay and providing the necessary information to allow a successful claim. I have spoken to Mr Ashley and he feels this will be sufficient.
+
+During the interview, Mr Ashley also mentioned his wish to see some integration with Google Workspace. I have researched this issue further, and have found that Google provide an API to allow third party applications to authenticate and integrate with their services. As such, I am able to implement the ability to sign in with a Google account,and also the desired calendar integration. This will be done if there is remaining development time - however, the design of the system will be done with the aim of integrating these features easily.
 
 ### Analysis of Example Journey
 Following the interview, Mr Ashley has kindly provided me with an example of his typical journey from Ulverston to Chester. This is illustrated in the diagram below:
@@ -118,15 +124,6 @@ Overall, looking into the example journey and the different circumstances that c
 ![ERD](./assets/ERD.svg)    
 User represents the end-user using the program. One user can have many journeys using the application, having a one-to-many relationship. Each journey using the application will have at least one service, and due to the nature of the application will likely involve many services - again giving a one to many relationship. Each service will call at multiple stations, which will be treated by the application as a data point to determine disruption. This is also representative of a one-to-many relationship.
 
-### Data Flow Overview
-**Input:**
-
-**Process:**
-
-**Output:**
-
-**Storage:**
-
 ### Data Flow   
 To help me visualise the flow of data within the system, I have created a series of data flow diagrams (DFD). This will also help me identify areas that could be optimised.
 
@@ -137,18 +134,16 @@ The current system is relatively simple. The checking of journey progress is typ
 
 I have determined there is no need for a Level 1 DFD for the current system as I am unable to accurately determine the data flow to that level.
 
-**Proposed Solution - Level 0**
-
-**Proposed Solution - Level 1**
-
-
-
 ## Proposed Solution
 
 ### Flow Diagram
 ![Flow Diagram](./assets/Flow%20Chart.svg)
 
 To better understand what needs to be included in the program, I have created a flow diagram that illustrates the journey checking and login features of the program. This provides a high level overview of how the program will work.
+
+### Data Flow
+![DFD Level 0](./assets/DFD%20Level%200%20-%20New%20System.png)
+The Data Flow for the Proposed System is similar to that of the original system, but is also reflective of the systems ability to request user input on alternative routing options through the 'Disruption Handler' process.
 
 ### Data Dictionary
 **User Information**
@@ -230,7 +225,6 @@ At this point in development, it is not possible to provide an accurate estimate
 ### Acceptable Limitations
 Unfortunately, it is unviable to obtain access to the National Rail Journey Planning system due to cost. This means that the journey planning solution will have to be manually maintained, and as such may lack fully up to date information on all stations on the National Rail network, such as changed MCTs and new alternative routings. Furthermore, due to time constraints, my solution will only have limited integration with other forms of public transport which may be more viable options (such as taking a bus). 
 The system will also be unable to determine whether the users ticket is valid for the routing taken, as it is not possible to fully integrate ticketing restrictions within the time frame of the project. However, due to the focus of the solution largely being on finding new journeys during disruption (where ticket restrictions are typically relaxed following missing the original service) this issue in particular should have minimal impact on the usability of the solution.
-// Not here? // Mr Ashley has also stated that while he would like to see the implementation of automatic delay repay within the solution, it would be acceptable if the application only provided the information necessary for the claim. Further research into this has highlighted the unsuitability of many TOCs web services for automatic solution-based claims - typically requiring registration. The introduction of this feature would also require the storage of payment information, which would introduce new complexity to the solution.
 
 ## Objectives
 
