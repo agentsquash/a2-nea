@@ -119,6 +119,12 @@ We can therefore take the following points from our analysis of this journey:
 Overall, looking into the example journey and the different circumstances that can impact it have given me both ideas for the solution while also presenting some problems, most notably when involving tight connections where the users actions are the biggest influence. Before starting the design of the program, I will research minimum connection times further to see what assumptions I can reasonably make, and which ones are more nuanced and require direct user intervention.
 
 ### Further research
+I have looked into the APIs available for accessing National Rail data, of which there are three:
+- Darwin - real time train running information.
+- Knowledgebase - contains customer facing information about stations and disruption
+- Online Journey Planner - contains a Real Time Journey Planner (RTJP) and the Disruption Webservice. Unfortunately, due to cost constraints, I am unable to use the RTJP in the scope of this project.
+
+From my research, I have found that there is large quantities of data that need to be processed, especially when working with timetable data. This is something that my solution will need to take into account - using a web based solution to process the data and provide it in a user friendly format.
 
 ### Entity Relationship Diagram
 ![ERD](./assets/ERD.svg)    
@@ -224,6 +230,7 @@ At this point in development, it is not possible to provide an accurate estimate
 
 ### Acceptable Limitations
 Unfortunately, it is unviable to obtain access to the National Rail Journey Planning system due to cost. This means that the journey planning solution will have to be manually maintained, and as such may lack fully up to date information on all stations on the National Rail network, such as changed MCTs and new alternative routings. Furthermore, due to time constraints, my solution will only have limited integration with other forms of public transport which may be more viable options (such as taking a bus). 
+
 The system will also be unable to determine whether the users ticket is valid for the routing taken, as it is not possible to fully integrate ticketing restrictions within the time frame of the project. However, due to the focus of the solution largely being on finding new journeys during disruption (where ticket restrictions are typically relaxed following missing the original service) this issue in particular should have minimal impact on the usability of the solution.
 
 ## Objectives
