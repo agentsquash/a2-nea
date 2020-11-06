@@ -119,7 +119,13 @@ We can therefore take the following points from our analysis of this journey:
 Overall, looking into the example journey and the different circumstances that can impact it have given me both ideas for the solution while also presenting some problems, most notably when involving tight connections where the users actions are the biggest influence. Before starting the design of the program, I will research minimum connection times further to see what assumptions I can reasonably make, and which ones are more nuanced and require direct user intervention.
 
 ### Input, Process, Output, Storage
-One of the functions that the system will perform is the processing of data related to a users journey. To be able to define the scope of this in my proposed solution, I need to first understand the data that is inputted, processed, outputted and stored. As I already have a full set of data from the example journey from Ulverston to Chester.
+One of the functions that the system will perform is the processing of data related to a users journey. To be able to define the scope of this in my proposed solution, I need to first understand the data used by the system. As I already have a full set of data from the example journey from Ulverston to Chester, I will use this data to determine what is inputted, processed, outputted and stored by the system.
+
+| IPOS  	| Information                                                                 	|
+|-------	|-----------------------------------------------------------------------------	|
+| Input 	| **User Information**: Username; Password; Email Address                     	|
+| Input 	| **Journey Information**: Departure Station; Arrival Station; Departure Time 	|
+|       	|                                                                             	|
 
 ### Further research
 I have looked into the APIs available for accessing National Rail data, of which there are three:
@@ -152,6 +158,7 @@ To better understand what needs to be included in the program, I have created a 
 
 ### Data Flow
 ![DFD Level 0](./assets/DFD%20Level%200%20-%20New%20System.png)
+
 The Data Flow for the Proposed System is similar to that of the original system, but is also reflective of the systems ability to request user input on alternative routing options through the 'Disruption Handler' process.
 
 ### Data Dictionary
