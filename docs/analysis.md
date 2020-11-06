@@ -121,11 +121,17 @@ Overall, looking into the example journey and the different circumstances that c
 ### Input, Process, Output, Storage
 One of the functions that the system will perform is the processing of data related to a users journey. To be able to define the scope of this in my proposed solution, I need to first understand the data used by the system. As I already have a full set of data from the example journey from Ulverston to Chester, I will use this data to determine what is inputted, processed, outputted and stored by the system.
 
-| IPOS  	| Information                                                                 	|
-|-------	|-----------------------------------------------------------------------------	|
-| Input 	| **User Information**: Username; Password; Email Address                     	|
-| Input 	| **Journey Information**: Departure Station; Arrival Station; Departure Time 	|
-|       	|                                                                             	|
+| IPOS    	| Information                                                                 	| Example                                         	| When?                                                                  	|
+|---------	|-----------------------------------------------------------------------------	|-------------------------------------------------	|------------------------------------------------------------------------	|
+| Input   	| **User Information**: Username; Password; Email Address                     	| agentsquash; passw0rd; john.appleseed@gmail.com 	| When the user enters the system                                        	|
+| Input   	| **Journey Information**: Departure Station; Arrival Station; Departure Time 	| Ulverston, Chester, 17:00                       	| When the user creates a new journey                                    	|
+| Input   	| **Timetable Data** from Darwin Push Port;                                   	| -                                               	| First running of program                                               	|
+| Input   	| **Real Time Journey Data** from Darwin Live Departure Board (LDB)           	| -                                               	| When necessary                                                         	|
+| Input   	| **Journey Disruption** from Disruptions WS                                  	| -                                               	| When necessary                                                         	|
+| Input   	| **Station Data** from NR Knowledgebase (Stations)                           	| -                                               	| When requested by the user                                             	|
+| Process 	| **Create user account** using inputted username, password and email.        	|                                                 	| If the user does not have an existing account                          	|
+| Process 	| **Determine routing** using departure station and time, arrival station     	|                                                 	| After creating a journey; Following journey intervention by the system 	|
+| Process 	|                                                                             	|                                                 	|                                                                        	|
 
 ### Further research
 I have looked into the APIs available for accessing National Rail data, of which there are three:
