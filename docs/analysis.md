@@ -118,6 +118,9 @@ We can therefore take the following points from our analysis of this journey:
 #### Conclusion
 Overall, looking into the example journey and the different circumstances that can impact it have given me both ideas for the solution while also presenting some problems, most notably when involving tight connections where the users actions are the biggest influence. Before starting the design of the program, I will research minimum connection times further to see what assumptions I can reasonably make, and which ones are more nuanced and require direct user intervention.
 
+### Input, Process, Output, Storage
+One of the functions that the system will perform is the processing of data related to a users journey. To be able to define the scope of this in my proposed solution, I need to first understand the data that is inputted, processed, outputted and stored. As I already have a full set of data from the example journey from Ulverston to Chester.
+
 ### Further research
 I have looked into the APIs available for accessing National Rail data, of which there are three:
 - Darwin - real time train running information.
