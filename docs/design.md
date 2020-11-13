@@ -10,3 +10,5 @@ Document how parts of your system work.
 	4. File structure and organisation.
 	5. Database design (CREATE TABLE statements) and queries (they need explaining and examples providing).
 	6. Hardware selection/design
+	
+Initial focus needs to be on how to handle the data provided by the National Rail APIs and how to consume them - offline first.
