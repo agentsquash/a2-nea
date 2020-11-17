@@ -259,7 +259,9 @@ At this point in development, it is not possible to provide an accurate estimate
 ### Data Representation
 One of the key features of the proposed system, the dynamic journey rerouting feature, poses challenges due to the need to represent the UK rail network in a manner that can easily be used for journey planning. National Rail and the Rail Delivery Group (RDG) have an API available to prevent this issue; however, due to tight cost restraints from the client, I am unable to use this interface. Therefore, it is necessary to create a new representation of the rail network for this purpose.
 
-// Discuss with JEv. Perhaps create a graph of type Stations and store the quickest timetabled journeytime between them? 
+I am able to use the Darwin Live Departure Board (LDB) to check the real time status of services. I can also pull timetable data from National Rail using their Push Port facility - which also gives me timetable snapshots when updated. I can also request routing data from National Rail as necessary to assist with routing.
+
+With this data, it is possible to represent the UK rail network as a weighted graph which can then be searched, potentially augmented by the routing data provided by National Rail. 
 
 ### Acceptable Limitations
 Unfortunately, it is unviable to obtain access to the National Rail Journey Planning system due to cost. This means that the journey planning solution will have to be manually maintained, and as such may lack fully up to date information on all stations on the National Rail network, such as changed MCTs and new alternative routings. Furthermore, due to time constraints, my solution will only have limited integration with other forms of public transport which may be more viable options (such as taking a bus). 
