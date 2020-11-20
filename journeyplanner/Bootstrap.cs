@@ -2,7 +2,7 @@
 
 namespace JourneyPlanner
 {
-	class Program
+	class Bootstrap
 	{
 		static void Main(string[] args)
 		{

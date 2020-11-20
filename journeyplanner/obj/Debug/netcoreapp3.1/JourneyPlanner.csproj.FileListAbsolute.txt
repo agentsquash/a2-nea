@@ -1,0 +1,4 @@
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\JourneyPlanner.exe
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\obj\Debug\netcoreapp3.1\JourneyPlanner.csprojAssemblyReference.cache
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\obj\Debug\netcoreapp3.1\JourneyPlanner.AssemblyInfoInputs.cache
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\obj\Debug\netcoreapp3.1\JourneyPlanner.AssemblyInfo.cs

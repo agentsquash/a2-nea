@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner\\JourneyPlanner.csproj": {}
+    "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner\\JourneyPlanner.csproj": {
+    "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner\\JourneyPlanner.csproj",
+        "projectUniqueName": "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner.csproj",
         "projectName": "JourneyPlanner",
-        "projectPath": "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner\\JourneyPlanner.csproj",
+        "projectPath": "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner.csproj",
         "packagesPath": "C:\\Users\\alexa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner\\obj\\",
+        "outputPath": "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\alexa\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -37,6 +37,12 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "dependencies": {
+            "sqlite": {
+              "target": "Package",
+              "version": "[3.13.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
