@@ -7,7 +7,7 @@ namespace JourneyPlanner
 		static void Main(string[] args)
 		{
 			DataFetcher dataFetch = new DataFetcher();
-			dataFetch.FetchDarwinLDBBoard("dep","ULV");
+			dataFetch.FetchCRS("Ulverston");
 		}
 	}
 }

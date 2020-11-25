@@ -145,4 +145,15 @@ namespace JourneyPlanner
         public object futureChangeTo { get; set; }
         public bool assocIsCancelled { get; set; }
     }
+
+    public class CRSData
+    {
+        public string stationName { get; set; }
+        public string crsCode { get; set; }
+    }
+
+    public class CRSChecker
+    {
+        public List<CRSData> crsData { get; set; }
+    }
 }
