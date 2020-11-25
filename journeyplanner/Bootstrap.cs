@@ -6,7 +6,8 @@ namespace JourneyPlanner
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
+			DataFetcher dataFetch = new DataFetcher();
+			dataFetch.FetchDarwinLDBBoard("dep","ULV");
 		}
 	}
 }
