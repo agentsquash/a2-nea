@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Web;
+using SQL
 
 namespace JourneyPlanner
 {
@@ -67,17 +68,18 @@ namespace JourneyPlanner
             return JsonSerializer.Deserialize<BoardInfo>(FetchURL(requestConstruct));
 		}
 
-		public string FetchCRS (string stationName)
+		public void FetchCRSData (string stationName)
 		{
-			string requestConstruct = darwin_web_loc + "crs/" + stationName;
-			string json_string = FetchURL(requestConstruct);
-			var crsCheck = JsonSerializer.Deserialize<CRSChecker>(json_string);
-			return "Invalid station";
+		}
+
+		public bool CheckCRSData(CRSData crs)
+		{
+			return true;
 		}
 		
 		public void ConvertRailReferences()
         {
 
         }
-    }
+	}
 }

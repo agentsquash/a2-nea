@@ -146,13 +146,13 @@ namespace JourneyPlanner
         public bool assocIsCancelled { get; set; }
     }
 
-    public class CRSData
+    public class CRSStation
     {
         public string stationName { get; set; }
         public string crsCode { get; set; }
     }
 
-    public class CRSChecker
+    public class CRSData
     {
         public List<CRSData> crsData { get; set; }
     }

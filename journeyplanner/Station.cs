@@ -5,7 +5,7 @@ using System.Text;
 namespace JourneyPlanner
 {
 	class Station
-	{
+	{ 
 		public Station()
 		{
 

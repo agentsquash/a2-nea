@@ -7,12 +7,6 @@ C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\JourneyPlanner.runtimeconfig.dev.json
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\JourneyPlanner.dll
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\JourneyPlanner.pdb
-C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\linux-x64\native\libsqlite3.so
-C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\osx-x64\native\libsqlite3.dylib
-C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win7-x64\native\sqlite3.dll
-C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win7-x86\native\sqlite3.dll
-C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\obj\Debug\netcoreapp3.1\JourneyPlanner.csproj.CoreCompileInputs.cache
-C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\obj\Debug\netcoreapp3.1\JourneyPlanner.csproj.CopyComplete
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\obj\Debug\netcoreapp3.1\JourneyPlanner.dll
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\obj\Debug\netcoreapp3.1\JourneyPlanner.pdb
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\obj\Debug\netcoreapp3.1\JourneyPlanner.genruntimeconfig.cache

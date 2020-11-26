@@ -38,9 +38,9 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
-            "sqlite": {
+            "Microsoft.Data.Sqlite": {
               "target": "Package",
-              "version": "[3.13.0, )"
+              "version": "[5.0.0, )"
             }
           },
           "imports": [
