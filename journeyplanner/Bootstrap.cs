@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.Sqlite;
+using System.Data.SQLite;
 
 namespace JourneyPlanner
 {
@@ -7,8 +7,9 @@ namespace JourneyPlanner
 	{
 		static void Main(string[] args)
 		{
+			
 			DataFetcher dataFetch = new DataFetcher();
-			dataFetch.FetchCRSData("Ulverston");
+			dataFetch.ConvertRailReferences();
 		}
 	}
 }
