@@ -7,9 +7,8 @@ namespace JourneyPlanner
 	{
 		static void Main(string[] args)
 		{
-			
-			DataFetcher dataFetch = new DataFetcher();
-			dataFetch.ConvertRailReferences();
+			DataFetcher Clive = new DataFetcher();
+			Clive.InitialiseStationData();
 		}
 	}
 }

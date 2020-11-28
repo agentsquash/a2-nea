@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "N:\\12CP1_19-21\\Alex Ashley\\nea-traindisruptionapp\\nea-traindisruptionapp-master\\journeyplanner\\JourneyPlanner.csproj": {}
+    "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner.csproj": {}
   },
   "projects": {
-    "N:\\12CP1_19-21\\Alex Ashley\\nea-traindisruptionapp\\nea-traindisruptionapp-master\\journeyplanner\\JourneyPlanner.csproj": {
+    "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "N:\\12CP1_19-21\\Alex Ashley\\nea-traindisruptionapp\\nea-traindisruptionapp-master\\journeyplanner\\JourneyPlanner.csproj",
+        "projectUniqueName": "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner.csproj",
         "projectName": "JourneyPlanner",
-        "projectPath": "N:\\12CP1_19-21\\Alex Ashley\\nea-traindisruptionapp\\nea-traindisruptionapp-master\\journeyplanner\\JourneyPlanner.csproj",
-        "packagesPath": "C:\\Users\\14aa8177\\.nuget\\packages\\",
-        "outputPath": "N:\\12CP1_19-21\\Alex Ashley\\nea-traindisruptionapp\\nea-traindisruptionapp-master\\journeyplanner\\obj\\",
+        "projectPath": "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner.csproj",
+        "packagesPath": "C:\\Users\\alexa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\14aa8177\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\alexa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -58,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
         }
       }
     }

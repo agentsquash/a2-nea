@@ -7,7 +7,6 @@ using System.Web;
 using System.Data.SQLite;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.FileIO;
-//using SQL
 
 namespace JourneyPlanner
 {
@@ -80,20 +79,20 @@ namespace JourneyPlanner
 		{
 			return true;
 		}
-		public void ConvertRailReferences()
+		public void InitialiseStationData()
 		{
 			string ConnString = "Data Source=.\\data.db; Version=3;";
 
 			SQLiteConnection dbconn = new SQLiteConnection(ConnString);
 			dbconn.Open();
 
-			SQLiteCommand DeleteStationTable = new SQLiteCommand("DROP TABLE stationdata",dbconn);
-			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE stationdata (ATCOCode VARCHAR(11), TIPLOC VARCHAR(7), CRSCode VARCHAR(3), stationName VARCHAR(64), ConnTime INT)",dbconn);
+			SQLiteCommand DeleteStationTable = new SQLiteCommand("DROP TABLE stationdata", dbconn);
+			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE stationdata (ATCOCode VARCHAR(11), TIPLOC VARCHAR(7), CRSCode VARCHAR(3), stationName VARCHAR(64), ConnTime INT)", dbconn);
 
 			DeleteStationTable.ExecuteNonQuery();
 			CreateStationTable.ExecuteNonQuery();
 
-			using (TextFieldParser parser = new TextFieldParser(".\\RailReferences.csv"))
+			using (TextFieldParser parser = new TextFieldParser("C:/Users/alexa/Documents/GitHub/nea-traindisruptionapp/journeyplanner/RailReferences.csv"))
 			{
 				int rowno = 0;
 				parser.TextFieldType = FieldType.Delimited;
@@ -101,19 +100,24 @@ namespace JourneyPlanner
 				while (!parser.EndOfData)
 				{
 					string[] fields = parser.ReadFields();
-					fields[3] = fields[3].Replace("'", "''").Replace(" Rail Station", "");
+					fields[3] = fields[3].Replace("'", "''").Replace(" Rail Station", "").Replace(" Railway Station", "");
+
+					// Add station data
 					if (rowno != 0)
 					{
-
-						string addstation = "INSERT INTO stationdata (ATCOCode, TIPLOC, CRSCode, stationName) values ('" + fields[0] + "','" + fields[1] + "','" + fields[2] + "','" + fields[3] + "')";
+						string addstation = "INSERT INTO stationdata (ATCOCode, TIPLOC, CRSCode, stationName, ConnTime) values ('" + fields[0] + "','" + fields[1] + "','" + fields[2] + "','" + fields[3] + "',5)";
 						SQLiteCommand AddStation = new SQLiteCommand(addstation, dbconn);
 						Console.WriteLine("{1}: Adding {0}...", fields[3], rowno);
 						AddStation.ExecuteNonQuery();
 					}
+					rowno++;
+
 				}
-				Console.WriteLine("Conversion completed! {0} stations changed.",rowno);
+				Console.WriteLine("Conversion completed! {0} stations changed.", rowno);
 			}
 			dbconn.Close();
 		}
+
+		
 	}
 }

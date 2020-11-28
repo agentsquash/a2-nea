@@ -50,3 +50,31 @@ N:\12CP1_19-21\Alex Ashley\nea-traindisruptionapp\nea-traindisruptionapp-master\
 N:\12CP1_19-21\Alex Ashley\nea-traindisruptionapp\nea-traindisruptionapp-master\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 N:\12CP1_19-21\Alex Ashley\nea-traindisruptionapp\nea-traindisruptionapp-master\journeyplanner\obj\Debug\netcoreapp3.1\JourneyPlanner.csproj.CoreCompileInputs.cache
 N:\12CP1_19-21\Alex Ashley\nea-traindisruptionapp\nea-traindisruptionapp-master\journeyplanner\obj\Debug\netcoreapp3.1\JourneyPlanner.csproj.CopyComplete
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\EntityFramework.SqlServer.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\EntityFramework.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\System.Data.SQLite.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\System.CodeDom.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\System.Data.SQLite.EF6.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\System.Security.Permissions.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\System.Windows.Extensions.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\linux-x64\native\SQLite.Interop.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\osx-x64\native\SQLite.Interop.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\SQLite.Interop.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\SQLite.Interop.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\obj\Debug\netcoreapp3.1\JourneyPlanner.csproj.CoreCompileInputs.cache
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\journeyplanner\obj\Debug\netcoreapp3.1\JourneyPlanner.csproj.CopyComplete
