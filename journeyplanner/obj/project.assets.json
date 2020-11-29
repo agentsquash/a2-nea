@@ -1150,19 +1150,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\alexa\\.nuget\\packages\\": {}
+    "C:\\Users\\Alex\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner.csproj",
+      "projectUniqueName": "C:\\Users\\Alex\\source\\repos\\agentsquash\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner.csproj",
       "projectName": "JourneyPlanner",
-      "projectPath": "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner.csproj",
-      "packagesPath": "C:\\Users\\alexa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alexa\\Documents\\GitHub\\nea-traindisruptionapp\\journeyplanner\\obj\\",
+      "projectPath": "C:\\Users\\Alex\\source\\repos\\agentsquash\\nea-traindisruptionapp\\journeyplanner\\JourneyPlanner.csproj",
+      "packagesPath": "C:\\Users\\Alex\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Alex\\source\\repos\\agentsquash\\nea-traindisruptionapp\\journeyplanner\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\alexa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Alex\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

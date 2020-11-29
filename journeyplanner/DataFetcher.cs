@@ -93,7 +93,7 @@ namespace JourneyPlanner
 			DeleteStationTable.ExecuteNonQuery();
 			CreateStationTable.ExecuteNonQuery();
 
-			using (TextFieldParser parser = new TextFieldParser("C:/Users/alexa/Documents/GitHub/nea-traindisruptionapp/journeyplanner/RailReferences.csv"))
+			using (TextFieldParser parser = new TextFieldParser(".\\RailReferences.csv"))
 			{
 				int rowno = 0;
 				parser.TextFieldType = FieldType.Delimited;
