@@ -12,7 +12,7 @@ namespace JourneyPlanner
 {
 	class DataFetcher
 	{
-
+		
 		private string darwin_ldb_key = "?accessToken=3be43ffc-b0b8-4e2c-bb24-28060d72e7fb";
 		private string darwin_web_loc = "https://nea-nrapi.apphb.com/";
 
@@ -70,22 +70,37 @@ namespace JourneyPlanner
 			return JsonSerializer.Deserialize<BoardInfo>(FetchURL(requestConstruct));
 		}
 
-		public void FetchCRSData(string stationName)
+		public string FetchCRSCode(string stationName)
 		{
-
-		}
-
-		public bool CheckCRSData(CRSData crs)
-		{
-			return true;
-		}
-		public void InitialiseStationData()
-		{
-			string ConnString = "Data Source=.\\data.db; Version=3;";
-
-			SQLiteConnection dbconn = new SQLiteConnection(ConnString);
+			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
 
+			if (stationName.Length == 3)
+			{
+				bool match = true;
+				SQLiteCommand CheckIfCRS = new SQLiteCommand("SELECT crsCode FROM stationdata WHERE crsCode = '" + stationName + "'",dbconn);
+				SQLiteDataReader reader = CheckIfCRS.ExecuteReader();
+				
+				while (reader.Read())
+				{
+
+				}
+			}
+			return "";
+		}
+
+		private SQLiteConnection InitialiseDB()
+		{
+			string ConnString = "Data Source=.\\data.db; Version=3;";
+			return new SQLiteConnection(ConnString);
+		}
+		/// <summary>
+		/// This function initialises the StationData database, using the RailReferences.csv provided by the DfT's NaPTAN.
+		/// </summary>
+		public void InitialiseStationData()
+		{
+			var dbconn = InitialiseDB();
+			dbconn.Open();
 			SQLiteCommand DeleteStationTable = new SQLiteCommand("DROP TABLE stationdata", dbconn);
 			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS stationdata (tiplocCode VARCHAR(7) PRIMARY KEY UNIQUE, crsCode VARCHAR(3), stationName VARCHAR(64), connTime INT)", dbconn);
 
@@ -120,12 +135,10 @@ namespace JourneyPlanner
 
 		public void InitialiseConnectionData()
 		{
-			string ConnString = "Data Source=.\\data.db; Version=3;";
-
-			SQLiteConnection dbconn = new SQLiteConnection(ConnString);
+			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
 
-			SQLiteCommand CreateConnectionTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS connectiondata (crsCode VARCHAR(3) PRIMARY KEY UNIQUE, connectionType INT, connTime INT, connFrom VARCHAR(2), connTo VARCHAR(3))",dbconn);
+			SQLiteCommand CreateConnectionTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS connectiondata (crsCode VARCHAR(3) PRIMARY KEY, connectionType INT, connTime INT, connFrom VARCHAR(2), connTo VARCHAR(3))",dbconn);
 			CreateConnectionTable.ExecuteNonQuery();
 		}
 
