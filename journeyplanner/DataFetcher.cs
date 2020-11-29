@@ -87,7 +87,8 @@ namespace JourneyPlanner
 			dbconn.Open();
 
 			SQLiteCommand DeleteStationTable = new SQLiteCommand("DROP TABLE stationdata", dbconn);
-			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE stationdata (ATCOCode VARCHAR(11), TIPLOC VARCHAR(7), CRSCode VARCHAR(3), stationName VARCHAR(64), ConnTime INT)", dbconn);
+			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS stationdata (tiplocCode VARCHAR(7) PRIMARY KEY UNIQUE, crsCode VARCHAR(3), stationName VARCHAR(64), connTime INT)", dbconn);
+
 
 			DeleteStationTable.ExecuteNonQuery();
 			CreateStationTable.ExecuteNonQuery();
@@ -105,17 +106,27 @@ namespace JourneyPlanner
 					// Add station data
 					if (rowno != 0)
 					{
-						string addstation = "INSERT INTO stationdata (ATCOCode, TIPLOC, CRSCode, stationName, ConnTime) values ('" + fields[0] + "','" + fields[1] + "','" + fields[2] + "','" + fields[3] + "',5)";
+						string addstation = "INSERT INTO stationdata (tiplocCode, crsCode, stationName, connTime) values ('" + fields[1] + "','" + fields[2] + "','" + fields[3] + "','5')";
 						SQLiteCommand AddStation = new SQLiteCommand(addstation, dbconn);
 						Console.WriteLine("{1}: Adding {0}...", fields[3], rowno);
 						AddStation.ExecuteNonQuery();
 					}
 					rowno++;
-
 				}
-				Console.WriteLine("Conversion completed! {0} stations changed.", rowno);
+				Console.WriteLine("Initialisation completed! {0} stations changed.", rowno);
 			}
 			dbconn.Close();
+		}
+
+		public void InitialiseConnectionData()
+		{
+			string ConnString = "Data Source=.\\data.db; Version=3;";
+
+			SQLiteConnection dbconn = new SQLiteConnection(ConnString);
+			dbconn.Open();
+
+			SQLiteCommand CreateConnectionTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS connectiondata (crsCode VARCHAR(3) PRIMARY KEY UNIQUE, connectionType INT, connTime INT, connFrom VARCHAR(2), connTo VARCHAR(3))",dbconn);
+			CreateConnectionTable.ExecuteNonQuery();
 		}
 
 		

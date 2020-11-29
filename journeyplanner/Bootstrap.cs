@@ -9,6 +9,7 @@ namespace JourneyPlanner
 		{
 			DataFetcher Clive = new DataFetcher();
 			Clive.InitialiseStationData();
+			Clive.InitialiseConnectionData();
 		}
 	}
 }
