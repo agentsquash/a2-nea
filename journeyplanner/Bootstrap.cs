@@ -8,8 +8,7 @@ namespace JourneyPlanner
 		static void Main(string[] args)
 		{
 			DataFetcher Clive = new DataFetcher();
-			Clive.InitialiseStationData();
-			Clive.InitialiseConnectionData();
+			Clive.FetchCRSCode("ULV");
 		}
 	}
 }
