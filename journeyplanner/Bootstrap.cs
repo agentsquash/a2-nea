@@ -8,7 +8,7 @@ namespace JourneyPlanner
 		static void Main(string[] args)
 		{
 			DataFetcher Clive = new DataFetcher();
-			Clive.FetchCRSCode("ULV");
+			Clive.FetchCRSCode("Ulve");
 		}
 	}
 }
