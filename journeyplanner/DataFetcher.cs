@@ -70,8 +70,15 @@ namespace JourneyPlanner
 			return JsonSerializer.Deserialize<BoardInfo>(FetchURL(requestConstruct));
 		}
 
+		/// <summary>
+		/// This function attempts to find a CRS (3Alpha) code for 
+		/// </summary>
+		/// <param name="stationName"></param>
+		/// <returns></returns>
 		public string FetchCRSCode(string stationName)
 		{
+			List<string> StationsFound = new List<string>();
+			
 			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
 
@@ -79,16 +86,28 @@ namespace JourneyPlanner
 			{
 				bool match = true;
 				SQLiteCommand CheckIfCRS = new SQLiteCommand("SELECT crsCode FROM stationdata WHERE crsCode = '" + stationName + "'",dbconn);
-				SQLiteDataReader reader = CheckIfCRS.ExecuteReader();
-				
-				while (reader.Read())
-				{
+				SQLiteDataReader crsReader = CheckIfCRS.ExecuteReader();
 
+				while (crsReader.Read())
+				{
+					return crsReader.GetString(0);
 				}
 			}
-			return "";
-		}
+			SQLiteCommand StationSearch = new SQLiteCommand("SELECT crsCode,stationName FROM stationdata WHERE stationName LIKE '" + stationName + "'", dbconn);
+			SQLiteDataReader stationReader = StationSearch.ExecuteReader();
 
+			while (stationReader.Read())
+			{
+				Console.WriteLine(stationReader.GetString(0)+" "+stationReader.GetString(1));
+			}
+
+			return "";
+
+		}
+		/// <summary>
+		/// This function handles the initial connection to the data.db.
+		/// </summary>
+		/// <returns></returns>
 		private SQLiteConnection InitialiseDB()
 		{
 			string ConnString = "Data Source=.\\data.db; Version=3;";
@@ -133,6 +152,9 @@ namespace JourneyPlanner
 			dbconn.Close();
 		}
 
+		/// <summary>
+		/// This function creates the connection database if it does not already exist.
+		/// </summary>
 		public void InitialiseConnectionData()
 		{
 			SQLiteConnection dbconn = InitialiseDB();
