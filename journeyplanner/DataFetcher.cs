@@ -70,44 +70,24 @@ namespace JourneyPlanner
 			return JsonSerializer.Deserialize<BoardInfo>(FetchURL(requestConstruct));
 		}
 
-		/// <summary>
-		/// This function attempts to find a CRS (3Alpha) code for 
-		/// </summary>
-		/// <param name="stationName"></param>
-		/// <returns></returns>
 		public string FetchCRSCode(string stationName)
 		{
-			List<string> StationsFound = new List<string>();
-			
 			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
 
 			if (stationName.Length == 3)
 			{
-				bool match = true;
 				SQLiteCommand CheckIfCRS = new SQLiteCommand("SELECT crsCode FROM stationdata WHERE crsCode = '" + stationName + "'",dbconn);
-				SQLiteDataReader crsReader = CheckIfCRS.ExecuteReader();
-
-				while (crsReader.Read())
+				SQLiteDataReader reader = CheckIfCRS.ExecuteReader();
+				
+				while (reader.Read())
 				{
-					return crsReader.GetString(0);
+
 				}
 			}
-			SQLiteCommand StationSearch = new SQLiteCommand("SELECT crsCode,stationName FROM stationdata WHERE stationName LIKE '" + stationName + "'", dbconn);
-			SQLiteDataReader stationReader = StationSearch.ExecuteReader();
-
-			while (stationReader.Read())
-			{
-				Console.WriteLine(stationReader.GetString(0)+" "+stationReader.GetString(1));
-			}
-
 			return "";
-
 		}
-		/// <summary>
-		/// This function handles the initial connection to the data.db.
-		/// </summary>
-		/// <returns></returns>
+
 		private SQLiteConnection InitialiseDB()
 		{
 			string ConnString = "Data Source=.\\data.db; Version=3;";
@@ -122,7 +102,6 @@ namespace JourneyPlanner
 			dbconn.Open();
 			SQLiteCommand DeleteStationTable = new SQLiteCommand("DROP TABLE stationdata", dbconn);
 			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS stationdata (tiplocCode VARCHAR(7) PRIMARY KEY UNIQUE, crsCode VARCHAR(3), stationName VARCHAR(64), connTime INT)", dbconn);
-
 
 			DeleteStationTable.ExecuteNonQuery();
 			CreateStationTable.ExecuteNonQuery();
@@ -152,9 +131,6 @@ namespace JourneyPlanner
 			dbconn.Close();
 		}
 
-		/// <summary>
-		/// This function creates the connection database if it does not already exist.
-		/// </summary>
 		public void InitialiseConnectionData()
 		{
 			SQLiteConnection dbconn = InitialiseDB();

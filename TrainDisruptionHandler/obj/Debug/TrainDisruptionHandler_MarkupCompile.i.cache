@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\App.xaml
-2-399540238
+3-1570669462
 
-12-1195585702
+13-99125122
 30-261858378
-MainWindow.xaml;User.xaml;
+WindowMain.xaml;User.xaml;WindowSignUp.xaml;
 
-True
+False
 

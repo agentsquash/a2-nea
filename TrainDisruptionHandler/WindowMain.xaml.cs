@@ -18,7 +18,7 @@ namespace TrainDisruptionHandler
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class WindowMain : Window
 	{
 		private static Dictionary<string, Label> labels = new Dictionary<string, Label>();
 		private static Dictionary<string, Button> buttons = new Dictionary<string, Button>();
@@ -37,9 +37,11 @@ namespace TrainDisruptionHandler
 
 		void Btn_SignUp_Click(object sender, RoutedEventArgs e)
 		{
-			MessageBox.Show(this, "Test 3");
+			WindowSignUp SignUp = new WindowSignUp();
+			SignUp.Show();
+			this.Close();
 		}
-		public MainWindow()
+		public WindowMain()
 		{
 			InitializeComponent();
 

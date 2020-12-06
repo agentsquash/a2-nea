@@ -42,7 +42,7 @@ namespace TrainDisruptionHandler
 		{
 			TextBox textBox = new TextBox
 			{
-				Name = "Txt_" + Name
+				Name = "Txt_" + Name,
 			};
 			return textBox;
 		}

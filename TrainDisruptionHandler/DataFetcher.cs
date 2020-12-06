@@ -71,7 +71,7 @@ namespace TrainDisruptionHandler
 
 		public string FetchCRSCode(string stationName)
 		{
-			SQLiteConnection dbconn = InitialiseDB();
+			SQLiteConnection dbconn = UtilsDB.InitialiseDB();
 			dbconn.Open();
 
 			if (stationName.Length == 3)
@@ -87,17 +87,12 @@ namespace TrainDisruptionHandler
 			return "";
 		}
 
-		private SQLiteConnection InitialiseDB()
-		{
-			string ConnString = "Data Source=.\\data.db; Version=3;";
-			return new SQLiteConnection(ConnString);
-		}
 		/// <summary>
 		/// This function initialises the StationData database, using the RailReferences.csv provided by the DfT's NaPTAN.
 		/// </summary>
 		public void InitialiseStationData()
 		{
-			var dbconn = InitialiseDB();
+			var dbconn = UtilsDB.InitialiseDB();
 			dbconn.Open();
 			SQLiteCommand DeleteStationTable = new SQLiteCommand("DROP TABLE stationdata", dbconn);
 			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS stationdata (tiplocCode VARCHAR(7) PRIMARY KEY UNIQUE, crsCode VARCHAR(3), stationName VARCHAR(64), connTime INT)", dbconn);
@@ -132,7 +127,7 @@ namespace TrainDisruptionHandler
 
 		public void InitialiseConnectionData()
 		{
-			SQLiteConnection dbconn = InitialiseDB();
+			SQLiteConnection dbconn = UtilsDB.InitialiseDB();
 			dbconn.Open();
 
 			SQLiteCommand CreateConnectionTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS connectiondata (crsCode VARCHAR(3) PRIMARY KEY, connectionType INT, connTime INT, connFrom VARCHAR(2), connTo VARCHAR(3))", dbconn);
