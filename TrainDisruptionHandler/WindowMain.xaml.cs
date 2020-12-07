@@ -27,7 +27,8 @@ namespace TrainDisruptionHandler
 		
 		void Btn_Local_Click(object sender, RoutedEventArgs e)
 		{
-			MessageBox.Show("Test");
+			bool loginSuccess = UtilsDB.(txtBoxes["username"].Text, pwBoxes["password"].Password);
+
 		}
 
 		void Btn_OAuth_Click(object sender, RoutedEventArgs e)

@@ -44,7 +44,7 @@ namespace TrainDisruptionHandler
 		}
 
 		// https://medium.com/@mehanix/lets-talk-security-salted-password-hashing-in-c-5460be5c3aae
-		public static string PasswordHash(string password)
+		public static string[] PasswordHash(string password)
 		{
 			// Create salt
 			byte[] _salt;
@@ -56,7 +56,14 @@ namespace TrainDisruptionHandler
 			// Combine salt and hashed password
 			Array.Copy(_salt, 0, hashBytes, 0, 16);
 			Array.Copy(hash, 0, hashBytes, 16, 20);
-			return Convert.ToBase64String(hashBytes);
+
+			string[] data = new string[] { Convert.ToBase64String(hashBytes), Convert.ToBase64String(_salt) };
+			return data;
+		}
+
+		public static int FetchAccessLevel()
+		{
+			return -1;
 		}
 	}
 
