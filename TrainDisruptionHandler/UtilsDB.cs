@@ -15,23 +15,48 @@ namespace TrainDisruptionHandler
 			return new SQLiteConnection(ConnString);
 		}
 
-		public static int AuthenticateLocal(string username, string password)
+		public static int AuthLocalAccount(string username, string password)
 		{
-			int UserID = -1;
-			var dbconn = InitialiseDB();
+			bool usernameValid = UtilsAuth.UsernameValidation(username);
+			if (!usernameValid)
+				return -1;
+
+			bool passwordValid = UtilsAuth.PasswordValidation(password, password);
+			if (!passwordValid)
+				return -1;
+
+			SQLiteConnection dbconn = InitialiseDB();
+			SQLiteCommand FetchUsername = new SQLiteCommand("SELECT password,userID FROM users_local WHERE username = @username",dbconn);
+			FetchUsername.Parameters.AddWithValue("@username", username);
+
 			dbconn.Open();
-			return UserID;
+			SQLiteDataReader reader = FetchUsername.ExecuteReader();
+			reader.Read();
+
+			bool passwordMatch = UtilsAuth.PasswordVerify(password, reader.GetString(0));
+			if (!passwordMatch)
+				return -1;
+
+			SQLiteCommand FetchAccessLevel = new SQLiteCommand("SELECT accessLevel FROM users WHERE UserID = @UserID",dbconn);
+			FetchAccessLevel.Parameters.AddWithValue("@UserID", reader.GetInt32(1));
+			SQLiteDataReader accessReader = FetchAccessLevel.ExecuteReader();
+			int accessLevel;
+
+			return Convert.ToInt32(accessLevel);
+
+
 		}
 
-		public static bool CreateLocalAccount(string username,string email,string password, string salt)
+		
+		public static bool CreateLocalAccount(string username,string email,string password)
 		{
 			int UserID;
 			
 			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
 
-			SQLiteCommand CreateAccountTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS users (UserID INTEGER UNIQUE, accessType INTEGER, accessLevel INTEGER PRIMARY KEY (UserID AUTOINCREMENT))", dbconn);
-			SQLiteCommand CreateLocalAccountTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS users_local (UserID INTEGER UNIQUE, username VARCHAR(64), email VARCHAR(320), password BLOB, salt BLOB)",dbconn);
+			SQLiteCommand CreateAccountTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS users (UserID INTEGER UNIQUE, accessType INTEGER, accessLevel INTEGER, PRIMARY KEY (UserID AUTOINCREMENT))", dbconn);
+			SQLiteCommand CreateLocalAccountTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS users_local (UserID INTEGER UNIQUE, username VARCHAR(64) UNIQUE, email VARCHAR(320), password BLOB)",dbconn);
 
 			CreateAccountTable.ExecuteNonQuery();
 			CreateLocalAccountTable.ExecuteNonQuery();
@@ -43,7 +68,7 @@ namespace TrainDisruptionHandler
 			readerUsers.Read();
 			UserID = readerUsers.GetInt32(0);
 
-			SQLiteCommand InsertUserLocalAccount = new SQLiteCommand("INSERT INTO users_local (UserID, username, email, password, salt, accessLevel) VALUES (" + UserID + ",'" + username + "','" + email + "','" + password +"','"+ salt + "',0)", dbconn);
+			SQLiteCommand InsertUserLocalAccount = new SQLiteCommand("INSERT INTO users_local (UserID, username, email, password) VALUES (" + UserID + ",'" + username + "','" + email + "','" + password + "')", dbconn);
 			InsertUserLocalAccount.ExecuteNonQuery();
 			return true;
 		}

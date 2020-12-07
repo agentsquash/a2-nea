@@ -44,7 +44,7 @@ namespace TrainDisruptionHandler
 		}
 
 		// https://medium.com/@mehanix/lets-talk-security-salted-password-hashing-in-c-5460be5c3aae
-		public static string[] PasswordHash(string password)
+		public static string PasswordHash(string password)
 		{
 			// Create salt
 			byte[] _salt;
@@ -57,13 +57,25 @@ namespace TrainDisruptionHandler
 			Array.Copy(_salt, 0, hashBytes, 0, 16);
 			Array.Copy(hash, 0, hashBytes, 16, 20);
 
-			string[] data = new string[] { Convert.ToBase64String(hashBytes), Convert.ToBase64String(_salt) };
-			return data;
+			return Convert.ToBase64String(hashBytes);
 		}
 
-		public static int FetchAccessLevel()
+		public static bool PasswordVerify(string password, string dbpassword)
 		{
-			return -1;
+			byte[] hashBytes = Convert.FromBase64String(dbpassword);
+			// Remove salt
+			byte[] salt = new byte[16];
+			Array.Copy(hashBytes, 0, salt, 0, 16);
+			// Hash user password
+			var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+			byte[] hash = pbkdf2.GetBytes(20);
+
+			for (int i = 0; i < 20; i++)
+				if (hashBytes[i + 16] != hash[i])
+					return false;
+			return true;
+
+
 		}
 	}
 
