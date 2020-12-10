@@ -98,11 +98,16 @@ namespace TrainDisruptionHandler
 			if (passwordValid)
 			{
 				string password = UtilsAuth.PasswordHash(pwBoxes["password"].Password);
-				UtilsDB.CreateLocalAccount(txtBoxes["username"].Text, txtBoxes["email"].Text, password);
-				MessageBox.Show("Account created!\nYou will now be returned to the login screen.", "Success!", MessageBoxButton.OK, MessageBoxImage.Information);
-				WindowMain loginWindow = new WindowMain();
-				loginWindow.Show();
-				this.Close();
+				bool success = UtilsDB.CreateLocalAccount(txtBoxes["username"].Text, txtBoxes["email"].Text, password);
+				if (success)
+				{
+					MessageBox.Show("Account created!\nYou will now be returned to the login screen.", "Success!", MessageBoxButton.OK, MessageBoxImage.Information);
+					WindowMain loginWindow = new WindowMain();
+					loginWindow.Show();
+					this.Close();
+				}
+				else
+					MessageBox.Show("Account creation failed.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 			
 		}

@@ -28,12 +28,18 @@ namespace TrainDisruptionHandler
 		void Btn_Local_Click(object sender, RoutedEventArgs e)
 		{
 			int accessLevel = UtilsDB.AuthLocalAccount(txtBoxes["username"].Text, pwBoxes["password"].Password);
-			if (accessLevel == 0)
-				MessageBox.Show("User account login success.");
-			if (accessLevel == 1)
-				MessageBox.Show("Admin account login success.");
-			else
-				MessageBox.Show("Login failed.");
+			switch (accessLevel)
+			{
+				case 0:
+					MessageBox.Show("User account login success.");
+					break;
+				case 1:
+					MessageBox.Show("Admin account login success.");
+					break;
+				default:
+					MessageBox.Show("Incorrect username / password.","Login Failed",MessageBoxButton.OK,MessageBoxImage.Warning);
+					break;
+			}
 
 		}
 
