@@ -122,21 +122,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UtilsAuth.cs" />
-    <Compile Include="User.xaml.cs">
-      <DependentUpon>User.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UtilsDB.cs" />
-    <Compile Include="DataFetcher.cs" />
+    <Compile Include="UtilsDataFetch.cs" />
     <Compile Include="UtilsGUI.cs" />
     <Compile Include="UtilsJSONClasses.cs" />
     <Compile Include="WindowMain.xaml.cs">
       <DependentUpon>WindowMain.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="User.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="WindowSignUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

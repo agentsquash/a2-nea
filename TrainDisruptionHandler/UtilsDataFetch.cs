@@ -9,13 +9,13 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace TrainDisruptionHandler
 {
-	class DataFetcher
+	class UtilsDataFetch
 	{
 
 		private string darwin_ldb_key = "?accessToken=3be43ffc-b0b8-4e2c-bb24-28060d72e7fb";
 		private string darwin_web_loc = "https://nea-nrapi.apphb.com/";
 
-		public DataFetcher()
+		public UtilsDataFetch()
 		{
 
 		}
@@ -37,7 +37,12 @@ namespace TrainDisruptionHandler
 				return webClient.DownloadString(requestURL);
 			}
 		}
-
+		/// <summary>
+		/// This function fetches the Delay Information from the Darwin OpenLDBWS service, and returns it in the DelayInfo class.
+		/// </summary>
+		/// <param name="crsDep">Verified CRS code for departure station</param>
+		/// <param name="crsArr">Verified CRS code for arrival station</param>
+		/// <returns></returns>
 		public DelayInfo FetchDarwinLDBDelays(string crsDep, string crsArr)
 		{
 			string requestConstruct = darwin_web_loc + "delays/" + crsArr + "/from/" + crsDep + "/20" + darwin_ldb_key;
@@ -67,24 +72,6 @@ namespace TrainDisruptionHandler
 		{
 			string requestConstruct = darwin_web_loc + boardRequested + "/" + crsDep + darwin_ldb_key;
 			return JsonSerializer.Deserialize<BoardInfo>(FetchURL(requestConstruct));
-		}
-
-		public string FetchCRSCode(string stationName)
-		{
-			SQLiteConnection dbconn = UtilsDB.InitialiseDB();
-			dbconn.Open();
-
-			if (stationName.Length == 3)
-			{
-				SQLiteCommand CheckIfCRS = new SQLiteCommand("SELECT crsCode FROM stationdata WHERE crsCode = '" + stationName + "'", dbconn);
-				SQLiteDataReader reader = CheckIfCRS.ExecuteReader();
-
-				while (reader.Read())
-				{
-
-				}
-			}
-			return "";
 		}
 
 		/// <summary>
