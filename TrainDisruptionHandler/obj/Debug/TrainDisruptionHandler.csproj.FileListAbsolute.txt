@@ -38,11 +38,9 @@ C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\bi
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\bin\Debug\System.Text.Json.xml
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\bin\Debug\System.ValueTuple.xml
-C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\User.g.cs
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\WindowMain.g.cs
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\WindowSignUp.g.cs
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\WindowMain.baml
-C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\User.baml
 C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\WindowSignUp.baml
 C:\Users\Alex\source\repos\agentsquash\nea-traindisruptionapp\TrainDisruptionHandler\bin\Debug\TrainDisruptionHandler.exe.config
 C:\Users\Alex\source\repos\agentsquash\nea-traindisruptionapp\TrainDisruptionHandler\bin\Debug\TrainDisruptionHandler.exe
@@ -90,3 +88,13 @@ C:\Users\Alex\source\repos\agentsquash\nea-traindisruptionapp\TrainDisruptionHan
 C:\Users\Alex\source\repos\agentsquash\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\TrainDisruptionHandler.csproj.CopyComplete
 C:\Users\Alex\source\repos\agentsquash\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\TrainDisruptionHandler.exe
 C:\Users\Alex\source\repos\agentsquash\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\TrainDisruptionHandler.pdb
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\bin\Debug\AWSSDK.Core.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\bin\Debug\AWSSDK.S3.dll
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\bin\Debug\AWSSDK.Core.pdb
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\bin\Debug\AWSSDK.Core.xml
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\bin\Debug\AWSSDK.S3.pdb
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\bin\Debug\AWSSDK.S3.xml
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\WindowAdminPanel.g.cs
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\WindowHome.g.cs
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\WindowAdminPanel.baml
+C:\Users\alexa\Documents\GitHub\nea-traindisruptionapp\TrainDisruptionHandler\obj\Debug\WindowHome.baml

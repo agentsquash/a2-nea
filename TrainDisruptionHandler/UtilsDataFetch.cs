@@ -12,8 +12,8 @@ namespace TrainDisruptionHandler
 	class UtilsDataFetch
 	{
 
-		private string darwin_ldb_key = "?accessToken=3be43ffc-b0b8-4e2c-bb24-28060d72e7fb";
-		private string darwin_web_loc = "https://nea-nrapi.apphb.com/";
+		private readonly string darwin_ldb_key = "?accessToken=3be43ffc-b0b8-4e2c-bb24-28060d72e7fb";
+		private readonly string darwin_web_loc = "https://nea-nrapi.apphb.com/";
 
 		public UtilsDataFetch()
 		{
@@ -72,44 +72,6 @@ namespace TrainDisruptionHandler
 		{
 			string requestConstruct = darwin_web_loc + boardRequested + "/" + crsDep + darwin_ldb_key;
 			return JsonSerializer.Deserialize<BoardInfo>(FetchURL(requestConstruct));
-		}
-
-		/// <summary>
-		/// This function initialises the StationData database, using the RailReferences.csv provided by the DfT's NaPTAN.
-		/// </summary>
-		public void InitialiseStationData()
-		{
-			var dbconn = UtilsDB.InitialiseDB();
-			dbconn.Open();
-			SQLiteCommand DeleteStationTable = new SQLiteCommand("DROP TABLE stationdata", dbconn);
-			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS stationdata (tiplocCode VARCHAR(7) PRIMARY KEY UNIQUE, crsCode VARCHAR(3), stationName VARCHAR(64), connTime INT)", dbconn);
-
-			DeleteStationTable.ExecuteNonQuery();
-			CreateStationTable.ExecuteNonQuery();
-
-			using (TextFieldParser parser = new TextFieldParser(".\\RailReferences.csv"))
-			{
-				int rowno = 0;
-				parser.TextFieldType = FieldType.Delimited;
-				parser.SetDelimiters(",");
-				while (!parser.EndOfData)
-				{
-					string[] fields = parser.ReadFields();
-					fields[3] = fields[3].Replace("'", "''").Replace(" Rail Station", "").Replace(" Railway Station", "");
-
-					// Add station data
-					if (rowno != 0)
-					{
-						string addstation = "INSERT INTO stationdata (tiplocCode, crsCode, stationName, connTime) values ('" + fields[1] + "','" + fields[2] + "','" + fields[3] + "','5')";
-						SQLiteCommand AddStation = new SQLiteCommand(addstation, dbconn);
-						Console.WriteLine("{1}: Adding {0}...", fields[3], rowno);
-						AddStation.ExecuteNonQuery();
-					}
-					rowno++;
-				}
-				Console.WriteLine("Initialisation completed! {0} stations changed.", rowno);
-			}
-			dbconn.Close();
 		}
 
 		public void InitialiseConnectionData()

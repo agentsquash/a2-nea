@@ -35,6 +35,9 @@ namespace TrainDisruptionHandler
 					break;
 				case 1:
 					MessageBox.Show("Admin account login success.");
+					WindowAdminPanel adminPanel = new WindowAdminPanel();
+					adminPanel.Show();
+					this.Close();
 					break;
 				default:
 					MessageBox.Show("Incorrect username / password.","Login Failed",MessageBoxButton.OK,MessageBoxImage.Warning);
@@ -83,6 +86,9 @@ namespace TrainDisruptionHandler
 			buttons["local"].Click += new RoutedEventHandler(Btn_Local_Click);
 			buttons["oauth"].Click += new RoutedEventHandler(Btn_OAuth_Click);
 			buttons["signup"].Click += new RoutedEventHandler(Btn_SignUp_Click);
+
+			pwBoxes["password"].Password = "Airways__3";
+			txtBoxes["username"].Text = "agentsquash";
 		}
 	}
 }

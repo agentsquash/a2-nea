@@ -110,9 +110,23 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="WindowAdminPanel.xaml.cs">
+      <DependentUpon>WindowAdminPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowHome.xaml.cs">
+      <DependentUpon>WindowHome.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowSignUp.xaml.cs">
       <DependentUpon>WindowSignUp.xaml</DependentUpon>
     </Compile>
+    <Page Include="WindowAdminPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowHome.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WindowMain.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

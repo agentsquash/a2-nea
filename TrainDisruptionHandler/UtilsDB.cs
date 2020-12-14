@@ -111,6 +111,8 @@ namespace TrainDisruptionHandler
 			//Insert local user account.
 			SQLiteCommand InsertUserLocalAccount = new SQLiteCommand("INSERT INTO users_local (UserID, username, email, password) VALUES (" + UserID + ",@username,@email,@password)", dbconn);
 			InsertUserLocalAccount.Parameters.AddWithValue("@username", username);
+			InsertUserLocalAccount.Parameters.AddWithValue("@email", email);
+			InsertUserLocalAccount.Parameters.AddWithValue("@password", password);
 			
 			InsertUserLocalAccount.ExecuteNonQuery();
 			dbconn.Close();
@@ -144,14 +146,15 @@ namespace TrainDisruptionHandler
 		/// </summary>
 		/// <param name="filename">Filename as provided from the textbox.</param>
 		/// <returns></returns>
-		public bool ConvertRailReferences(string filename)
+		public static bool ConvertRailReferences(string filename)
 		{
 			// Initialises database connection.
 			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
+
 			// Initialises create table statements prior to executing them.
 			SQLiteCommand CreateTIPLOCTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS tiploc_data (crsID INTEGER, tiploc TEXT UNIQUE)",dbconn);
-			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS stations_data (crsID INTEGER UNIQUE, crsCode TEXT UNIQUE, stationName TEXT, PRIMARY KEY(crsID AUTOINCREMENT)", dbconn);
+			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS stations_data (crsID INTEGER UNIQUE, crsCode TEXT UNIQUE, stationName TEXT, PRIMARY KEY(crsID AUTOINCREMENT))", dbconn);
 			CreateTIPLOCTable.ExecuteNonQuery();
 			CreateStationTable.ExecuteNonQuery();
 			dbconn.Close();
@@ -175,11 +178,10 @@ namespace TrainDisruptionHandler
 						// Then, fetch CRS ID and add TIPLOC data.
 						if (crsAdded)
 							crsID++;
-						AddToTIPLOCData(rowno, crsID, fields[1]);
+						AddToTIPLOCData(crsID, fields[1]);
 					}
 					rowno++;
 				}
-				Console.WriteLine("Initialisation completed! {0} stations changed.", crsID);
 			}
 			dbconn.Close();
 			return true;
@@ -193,15 +195,17 @@ namespace TrainDisruptionHandler
 		/// <param name="crs">The station's CRS (3Alpha) code, as found in RailReferences.</param>
 		/// <param name="station">The station's name, with excess data trimmed.</param>
 		/// <returns>If TRUE, then a new CRS code has been added and the CRS Code needs to be incremented.</returns>
-		private bool AddToStationData(string crs, string station)
+		private static bool AddToStationData(string crs, string station)
 		{
 			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
 
 			station = station.Replace("'", "''").Replace(" Rail Station", "").Replace(" Railway Station", "");
 			SQLiteCommand AddStationData = new SQLiteCommand("INSERT INTO stations_data (crsCode, stationName) VALUES (@crs, @station)", dbconn);
-			SQLiteCommand CheckStationUnique = new SQLiteCommand("SELECT crsCode FROM stations_data WHERE crsCode = @crs", dbconn);
+			SQLiteCommand CheckStationUnique = new SQLiteCommand("SELECT COUNT(crsCode) FROM stations_data WHERE crsCode = @crs", dbconn);
+			CheckStationUnique.Parameters.AddWithValue("@crs", crs);
 			int unique = Convert.ToInt32(CheckStationUnique.ExecuteScalar());
+
 			if (unique == 0)
 			{
 				AddStationData.Parameters.AddWithValue("@crs", crs);
@@ -219,7 +223,7 @@ namespace TrainDisruptionHandler
 		/// <param name="rowno">Current row in the CSV file.</param>
 		/// <param name="crsID"></param>
 		/// <param name="TIPLOC">Station TIPLOC code.</param>
-		private void AddToTIPLOCData(int rowno, int crsID, string TIPLOC)
+		private static void AddToTIPLOCData(int crsID, string TIPLOC)
 		{
 			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
