@@ -7,8 +7,8 @@ namespace JourneyPlanner
 	{
 		static void Main(string[] args)
 		{
-			DataFetcher Clive = new DataFetcher();
-			Clive.FetchCRSCode("Ulve");
+			DataFetcher Becca = new DataFetcher();
+			Becca.InitialiseStationData("C:/Users/alexa/Documents/GitHub/nea-traindisruptionapp/TrainDisruptionHandler/bin/Debug/RailReferences.csv");
 		}
 	}
 }

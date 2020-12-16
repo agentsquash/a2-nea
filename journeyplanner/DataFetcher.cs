@@ -88,7 +88,7 @@ namespace JourneyPlanner
 			return "";
 		}
 
-		private SQLiteConnection InitialiseDB()
+		public SQLiteConnection InitialiseDB()
 		{
 			string ConnString = "Data Source=.\\data.db; Version=3;";
 			return new SQLiteConnection(ConnString);
@@ -96,50 +96,100 @@ namespace JourneyPlanner
 		/// <summary>
 		/// This function initialises the StationData database, using the RailReferences.csv provided by the DfT's NaPTAN.
 		/// </summary>
-		public void InitialiseStationData()
+		public void InitialiseStationData(string filename)
 		{
-			var dbconn = InitialiseDB();
-			dbconn.Open();
-			SQLiteCommand DeleteStationTable = new SQLiteCommand("DROP TABLE stationdata", dbconn);
-			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS stationdata (tiplocCode VARCHAR(7) PRIMARY KEY UNIQUE, crsCode VARCHAR(3), stationName VARCHAR(64), connTime INT)", dbconn);
-
-			DeleteStationTable.ExecuteNonQuery();
-			CreateStationTable.ExecuteNonQuery();
-
-			using (TextFieldParser parser = new TextFieldParser(".\\RailReferences.csv"))
-			{
-				int rowno = 0;
-				parser.TextFieldType = FieldType.Delimited;
-				parser.SetDelimiters(",");
-				while (!parser.EndOfData)
-				{
-					string[] fields = parser.ReadFields();
-					fields[3] = fields[3].Replace("'", "''").Replace(" Rail Station", "").Replace(" Railway Station", "");
-
-					// Add station data
-					if (rowno != 0)
-					{
-						string addstation = "INSERT INTO stationdata (tiplocCode, crsCode, stationName, connTime) values ('" + fields[1] + "','" + fields[2] + "','" + fields[3] + "','5')";
-						SQLiteCommand AddStation = new SQLiteCommand(addstation, dbconn);
-						Console.WriteLine("{1}: Adding {0}...", fields[3], rowno);
-						AddStation.ExecuteNonQuery();
-					}
-					rowno++;
-				}
-				Console.WriteLine("Initialisation completed! {0} stations changed.", rowno);
-			}
-			dbconn.Close();
-		}
-
-		public void InitialiseConnectionData()
-		{
+			// Initialises database connection.
 			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
 
-			SQLiteCommand CreateConnectionTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS connectiondata (crsCode VARCHAR(3) PRIMARY KEY, connectionType INT, connTime INT, connFrom VARCHAR(2), connTo VARCHAR(3))",dbconn);
-			CreateConnectionTable.ExecuteNonQuery();
+			// Initialises create table statements prior to executing them.
+			SQLiteCommand CreateTIPLOCTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS tiploc_data (crsID INTEGER, tiploc TEXT UNIQUE)", dbconn);
+			SQLiteCommand ClearTIPLOCTable = new SQLiteCommand("DELETE FROM tiploc_data", dbconn);
+			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS stations_data (crsID INTEGER UNIQUE, crsCode TEXT UNIQUE, stationName TEXT, PRIMARY KEY(crsID AUTOINCREMENT))", dbconn);
+			SQLiteCommand ClearStationTable = new SQLiteCommand("DELETE FROM stations_data", dbconn);
+			CreateTIPLOCTable.ExecuteNonQuery();
+			CreateStationTable.ExecuteNonQuery();
+			ClearTIPLOCTable.ExecuteNonQuery();
+			ClearStationTable.ExecuteNonQuery();
+			dbconn.Close();
+
+			// Begin conversion of data to the database.
+			using (TextFieldParser parser = new TextFieldParser(filename))
+			{
+				int rowno = 0;
+				int crsID = 0;
+				bool crsAdded = false;
+				parser.TextFieldType = FieldType.Delimited;
+				parser.SetDelimiters(",");
+				string[] fields;
+				while (!parser.EndOfData)
+				{
+					fields = parser.ReadFields();
+
+					if (rowno != 0)
+					{
+						// Firstly, add CRS data
+						crsAdded = AddToStationData(fields[2], fields[3]);
+						// Then, handle CRS ID and add TIPLOC data.
+						if (crsAdded)
+							crsID++;
+						AddToTIPLOCData(crsID, fields[1]);
+					}
+					rowno++;
+				}
+			}
 		}
 
-		
+		/// <summary>
+		/// This private method is used to add the station CRS and name to the station_data database.
+		/// This method is used in combination with ConvertRailReferences.
+		/// </summary>
+		/// <param name="rowno">Current row in the CSV file.</param>
+		/// <param name="crs">The station's CRS (3Alpha) code, as found in RailReferences.</param>
+		/// <param name="station">The station's name, with excess data trimmed.</param>
+		/// <returns>If TRUE, then a new CRS code has been added and the CRS Code needs to be incremented.</returns>
+		static bool AddToStationData(string crs, string station)
+		{
+			string ConnString = "Data Source=.\\data.db; Version=3;";
+			SQLiteConnection dbconn = new SQLiteConnection(ConnString);
+			dbconn.Open();
+
+			station = station.Replace("'", "''").Replace(" Rail Station", "").Replace(" Railway Station", "");
+			SQLiteCommand AddStationData = new SQLiteCommand("INSERT INTO stations_data (crsCode, stationName) VALUES (@crs, @station)", dbconn);
+			SQLiteCommand CheckStationUnique = new SQLiteCommand("SELECT COUNT(crsCode) FROM stations_data WHERE crsCode = @crs", dbconn);
+			CheckStationUnique.Parameters.AddWithValue("@crs", crs);
+			int unique = Convert.ToInt32(CheckStationUnique.ExecuteScalar());
+
+			if (unique == 0)
+			{
+				AddStationData.Parameters.AddWithValue("@crs", crs);
+				AddStationData.Parameters.AddWithValue("@station", station);
+				AddStationData.ExecuteNonQuery();
+				dbconn.Close();
+				return true;
+			}
+			dbconn.Close();
+			return false;
+		}
+
+		/// <summary>
+		/// This private method is used to add a new TIPLOC and CRSId to the tiploc_data database.
+		/// This method is used in combination with ConvertRailReferences.
+		/// </summary>
+		/// <param name="rowno">Current row in the CSV file.</param>
+		/// <param name="crsID"></param>
+		/// <param name="TIPLOC">Station TIPLOC code.</param>
+		private static void AddToTIPLOCData(int crsID, string TIPLOC)
+		{
+			string ConnString = "Data Source=.\\data.db; Version=3;";
+			SQLiteConnection dbconn = new SQLiteConnection(ConnString);
+			dbconn.Open();
+
+			SQLiteCommand AddTIPLOCData = new SQLiteCommand("INSERT INTO tiploc_data (crsID, tiploc) VALUES (@crsID, @tiploc)", dbconn);
+			AddTIPLOCData.Parameters.AddWithValue("@crsID", crsID);
+			AddTIPLOCData.Parameters.AddWithValue("@tiploc", TIPLOC);
+			AddTIPLOCData.ExecuteNonQuery();
+			dbconn.Close();
+		}
 	}
 }

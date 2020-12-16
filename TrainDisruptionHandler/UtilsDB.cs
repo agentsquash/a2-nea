@@ -154,12 +154,16 @@ namespace TrainDisruptionHandler
 
 			// Initialises create table statements prior to executing them.
 			SQLiteCommand CreateTIPLOCTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS tiploc_data (crsID INTEGER, tiploc TEXT UNIQUE)",dbconn);
+			SQLiteCommand ClearTIPLOCTable = new SQLiteCommand("DELETE FROM tiploc_data",dbconn);
 			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS stations_data (crsID INTEGER UNIQUE, crsCode TEXT UNIQUE, stationName TEXT, PRIMARY KEY(crsID AUTOINCREMENT))", dbconn);
+			SQLiteCommand ClearStationTable = new SQLiteCommand("DELETE FROM stations_data",dbconn);
 			CreateTIPLOCTable.ExecuteNonQuery();
 			CreateStationTable.ExecuteNonQuery();
+			ClearTIPLOCTable.ExecuteNonQuery();
+			ClearStationTable.ExecuteNonQuery();
 			dbconn.Close();
-			// Begin conversion of data to the database.
 
+			// Begin conversion of data to the database.
 			using (TextFieldParser parser = new TextFieldParser(filename))
 			{
 				int rowno = 0;
@@ -167,15 +171,16 @@ namespace TrainDisruptionHandler
 				bool crsAdded = false;
 				parser.TextFieldType = FieldType.Delimited;
 				parser.SetDelimiters(",");
+				string[] fields;
 				while (!parser.EndOfData)
 				{
-					string[] fields = parser.ReadFields();
+					fields = parser.ReadFields();
 
 					if (rowno != 0)
 					{
 						// Firstly, add CRS data
 						crsAdded = AddToStationData(fields[2], fields[3]);
-						// Then, fetch CRS ID and add TIPLOC data.
+						// Then, handle CRS ID and add TIPLOC data.
 						if (crsAdded)
 							crsID++;
 						AddToTIPLOCData(crsID, fields[1]);
@@ -183,7 +188,6 @@ namespace TrainDisruptionHandler
 					rowno++;
 				}
 			}
-			dbconn.Close();
 			return true;
 		}
 
@@ -211,8 +215,10 @@ namespace TrainDisruptionHandler
 				AddStationData.Parameters.AddWithValue("@crs", crs);
 				AddStationData.Parameters.AddWithValue("@station", station);
 				AddStationData.ExecuteNonQuery();
+				dbconn.Close();
 				return true;
 			}
+			dbconn.Close();
 			return false;
 		}
 
