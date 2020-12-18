@@ -44,7 +44,7 @@ In my solution, there are various pieces of data that need to be stored, which a
 #### Stations Data
 This table stores data that needs to be held long term by the program, and uses the data provided by the UK Government's National Public Transport Access Node (NaPTAN).
 
-Due to the large amount of stations in the UK, only essential information is stored by the Stations Data database. Passenger facing information, including station operator and available facilities, is fetched directly from the National Rail Knowledgebase. This results initial table structure.
+Due to the large amount of stations in the UK, only essential information is stored by the Stations Data database. Passenger facing information, including station operator and available facilities, is fetched directly from the National Rail Knowledgebase. This results in an initial create table statement of:
 ```
 CREATE TABLE IF NOT EXISTS stationdata (
 	tiplocCode VARCHAR(7) UNIQUE, 
@@ -62,6 +62,38 @@ However, in its current form, the data is not compliant with 1st Normal Form. Da
 
 ![ERD_Stations_Data](./assets/ERD_Stations.png)
 
+From this relationship diagram, I have identified a need for four unique tables to allow normalisation of the data. The create table statements for these are shown below:
+```
+CREATE TABLE IF NOT EXISTS stations_data (
+	crsID INTEGER UNIQUE,
+	crsCode TEXT UNIQUE,
+	stationName TEXT,
+	PRIMARY KEY(crsID AUTOINCREMENT)
+)
+```
+```
+CREATE TABLE IF NOT EXISTS tiploc_data (
+	crsID INTEGER
+	tiploc TEXT UNIQUE
+	PRIMARY KEY(tiploc)
+)
+```
+```
+CREATE TABLE IF NOT EXISTS connections (
+	connectionID INTEGER UNIQUE
+	crsID INTEGER
+	connectionTime INTEGER
+	PRIMARY KEY(connectionID AUTOINCREMENT)
+)
+```
+```
+CREATE TABLE IF NOT EXISTS fixed_links (
+	linkID INTEGER
+	crsID_start INTEGER
+	crsID_end INTEGER
+	connectionTime INTEGER
+
+
 ***Connection Time***			
 
 National Rail does not make available minimum connection time data in an easy to use format for development purposes. As such, this data must be entered in manually. 
@@ -74,12 +106,11 @@ However, some stations also have designated 'fixed links' - connection times bet
 | Transfer | 0001-0659 | 28 minutes |
 | Tube     | 0700-2359 | 23 minutes |
 
-This table shows that between 0001 and 0659, the standard 'fixed link' between Blackfriars and Waterloo is 28 minutes. This reduces to 23 minutes by Tube between 0700-2359.
+This table shows that between 0001 and 0659, the standard 'fixed link' between Blackfriars and Waterloo is 28 minutes. This reduces to 23 minutes by Tube between 0700-2359. For the purposes of this project, the highest value will be used for the fixed link database.
 
-In recent years, stations in what is known as the Thameslink Core (Blackfriars-St Pancras) have introduced an operator specific connection time for Thameslink services of 3 minutes. This also needs to be handled by the program in case of a missed connection.
+In recent years, stations in what is known as the Thameslink Core (Blackfriars-St Pancras) have introduced an operator specific connection time for Thameslink services of 3 minutes. As this is such a niche use case and considering development time constraints, I will not be implementing this - instead using the highest connection time value in the generic data.
 
-As such, there is the need for another table to handle stations with multiple connection times/fixed link. These will be flagged in the main stations table with a connTime of -1.
-
+The generic service-to-service connection time will be handled by the 'connections' table, while to prevent unnecessary null fields I have separated out the fixed links to another table. This ensures minimal repetition, and minimises redundant data also.
 ### SQL Queries
 
 ### Entity Relationship Diagram
