@@ -44,10 +44,10 @@ In my solution, there are various pieces of data that need to be stored, which a
 #### Stations Data
 This table stores data that needs to be held long term by the program, and uses the data provided by the UK Government's National Public Transport Access Node (NaPTAN).
 
-Due to the large amount of stations in the UK, only essential information is stored by the Stations Data database. Passenger facing information, including station operator and available facilities, is fetched directly from the National Rail Knowledgebase. This results in the following table structure:
+Due to the large amount of stations in the UK, only essential information is stored by the Stations Data database. Passenger facing information, including station operator and available facilities, is fetched directly from the National Rail Knowledgebase. This results initial table structure.
 ```
 CREATE TABLE IF NOT EXISTS stationdata (
-	tiplocCode VARCHAR(7) PRIMARY KEY UNIQUE, 
+	tiplocCode VARCHAR(7) UNIQUE, 
 	crsCode VARCHAR(3), 
 	stationName VARCHAR(64), 
 	connTime INT
@@ -57,6 +57,10 @@ CREATE TABLE IF NOT EXISTS stationdata (
 - CRS (3Alpha) code: This code is the publically facing station code. This data is stored locally for performance reasons when initially searching for stations.
 - Station Name: the name of station.
 - Connection Time: The minimum connection time at the station (see Connection Time below)
+
+However, in its current form, the data is not compliant with 1st Normal Form. Data is duplicated within the same table (for example, multiple CRS codes which share the same station name) and the primary key is not identified. To resolve this, I firstly modelled the data that is needed in the database using an Entity Relationship Diagram.
+
+![ERD_Stations_Data](./assets/ERD_Stations.png)
 
 ***Connection Time***			
 
@@ -75,19 +79,6 @@ This table shows that between 0001 and 0659, the standard 'fixed link' between B
 In recent years, stations in what is known as the Thameslink Core (Blackfriars-St Pancras) have introduced an operator specific connection time for Thameslink services of 3 minutes. This also needs to be handled by the program in case of a missed connection.
 
 As such, there is the need for another table to handle stations with multiple connection times/fixed link. These will be flagged in the main stations table with a connTime of -1.
-
-#### Connection Data
-```
-CREATE TABLE IF NOT EXISTS connectiondata (
-	crsCode VARCHAR(3) PRIMARY KEY UNIQUE, 
-	connectionType INT, # 0 = fixed link, 1 = TOC-TOC
-	connTime INT, 
-	connFrom VARCHAR(2), # Only used with TOC-TOC connections
-	connTo VARCHAR(3)
-	)
-```
-
-This table is used for storing connection data which cannot be stored in the **stationdata** table, namely those stations with fixed links and TOC-TOC connections.
 
 ### SQL Queries
 
