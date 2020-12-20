@@ -7,8 +7,16 @@ using System.Security.Cryptography;
 
 namespace TrainDisruptionHandler
 {
+	/// <summary>
+	/// This class handles activities relating to authentication.
+	/// </summary>
 	class UtilsAuth
 	{
+		/// <summary>
+		/// This method is used to validate usernames entered by the user.
+		/// </summary>
+		/// <param name="username">User entered username</param>
+		/// <returns>TRUE: Username valid. | FALSE: Username invalid. </returns>
 		public static bool UsernameValidation(string username)
 		{
 			if (username.Length > 0 | username.Length <= 64)
@@ -16,6 +24,12 @@ namespace TrainDisruptionHandler
 			return false;
 		}
 		
+		/// <summary>
+		/// This method is used to validate emails in compliance with RFC 3696.
+		/// This method does not check if an email address will actually work!
+		/// </summary>
+		/// <param name="email">User entered email address.</param>
+		/// <returns>TRUE: Email valid. | FALSE: Email invalid.</returns>
 		public static bool EmailValidation(string email)
 		{
 			if (!(email.Contains('@')))
@@ -34,6 +48,13 @@ namespace TrainDisruptionHandler
 			return true;
 		}
 
+		/// <summary>
+		/// This method verifies that the user entered passwords are matching, and neither field is not null. 
+		/// The method does NOT handle passwords from the database.
+		/// </summary>
+		/// <param name="password">User entered password (top field)</param>
+		/// <param name="confirm_pass">User entered password (confirm field)</param>
+		/// <returns></returns>
 		public static bool PasswordValidation(string password, string confirm_pass)
 		{
 			if (password.Length == 0 | confirm_pass.Length == 0)
@@ -43,7 +64,13 @@ namespace TrainDisruptionHandler
 			return true;
 		}
 
-		// https://medium.com/@mehanix/lets-talk-security-salted-password-hashing-in-c-5460be5c3aae
+		/// <summary>
+		/// This method hashes and salts passwords on signup, using the RFC2898 standard.
+		/// I have adapted this method from the link below: https://medium.com/@mehanix/lets-talk-security-salted-password-hashing-in-c-5460be5c3aae
+		/// Demonstrates Group A technical skill: Hashing
+		/// </summary>
+		/// <param name="password">User entered password.</param>
+		/// <returns>Hashed/salted password.</returns>
 		public static string PasswordHash(string password)
 		{
 			// Create salt
@@ -60,6 +87,15 @@ namespace TrainDisruptionHandler
 			return Convert.ToBase64String(hashBytes);
 		}
 
+		/// <summary>
+		/// This method verifies the password entered by the user against that in the database.
+		/// The method hashes and salts the user entered, before verifying byte by byte the user password.
+		/// This method has been adapted from this link: https://medium.com/@mehanix/lets-talk-security-salted-password-hashing-in-c-5460be5c3aae
+		/// 
+		/// </summary>
+		/// <param name="password"></param>
+		/// <param name="dbpassword"></param>
+		/// <returns></returns>
 		public static bool PasswordVerify(string password, string dbpassword)
 		{
 			byte[] hashBytes = Convert.FromBase64String(dbpassword);
