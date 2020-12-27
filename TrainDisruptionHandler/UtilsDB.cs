@@ -118,33 +118,146 @@ namespace TrainDisruptionHandler
 			dbconn.Close();
 			return true;
 		}
+
 		/// <summary>
-		/// This method converts the station name provided by the user to the CRS (3Alpha) format.
+		/// This method is used for the Admin Panel to check if the Station Data table exists.
 		/// </summary>
-		/// <param name="stationName"> User provided code.</param>
 		/// <returns></returns>
-		public string FetchCRSCode(string stationName)
+		public static bool CheckStationDataExists()
 		{
-			SQLiteConnection dbconn = UtilsDB.InitialiseDB();
+			string table_name = "station_data";
+			return CheckTableExists(table_name);
+		}
+
+		/// <summary>
+		/// This method handles any requests to check if a table exists for GUI purposes.
+		/// </summary>
+		/// <param name="tablename">The name of the table to be checked.</param>
+		/// <returns></returns>
+		private static bool CheckTableExists(string tablename)
+		{
+			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
 
-			// This code checks if a user has already entered a CRS code.
-			if (stationName.Length == 3)
-			{
-				SQLiteCommand CheckIfCRS = new SQLiteCommand("SELECT crsCode FROM stationdata WHERE crsCode = '" + stationName + "'", dbconn);
-				SQLiteDataReader reader = CheckIfCRS.ExecuteReader();
-				while (reader.Read())
-				{
+			SQLiteCommand CheckTableExists = new SQLiteCommand("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=@tablename",dbconn);
+			CheckTableExists.Parameters.AddWithValue("@tablename", tablename);
+			int exists = Convert.ToInt32(CheckTableExists.ExecuteScalar());
 
+			if (exists == 1)
+				return true;
+			return false;
+		}
+
+		/// <summary>
+		/// This method removes any existing station data prior to the import of a new Station Codes file.
+		/// </summary>
+		/// <returns></returns>
+		public static void ResetStationData()
+		{
+			SQLiteConnection dbconn = InitialiseDB();
+			dbconn.Open();
+
+			// Setting up statements
+			SQLiteCommand ResetStationDataTable = new SQLiteCommand("DROP TABLE IF EXISTS station_data",dbconn);
+			SQLiteCommand ResetTiplocTable = new SQLiteCommand("DROP TABLE IF EXISTS tiploc_data", dbconn);
+			SQLiteCommand ResetConnectionTable = new SQLiteCommand("DROP TABLE IF EXISTS connection_data", dbconn);
+			SQLiteCommand ResetFixedLinkTable = new SQLiteCommand("DROP TABLE IF EXISTS fixed_links", dbconn);
+
+			// Executing SQL statements
+			ResetStationDataTable.ExecuteNonQuery();
+			ResetTiplocTable.ExecuteNonQuery();
+			ResetConnectionTable.ExecuteNonQuery();
+			ResetFixedLinkTable.ExecuteNonQuery();
+		}
+
+		/// <summary>
+		/// This method is used to convert the Station Codes data from the National Rail website into a format acceptable
+		/// to the Train Disruption Handler. This method is ran before any other data is imported.
+		/// </summary>
+		/// <param name="filename">User selected file</param>
+		/// <returns>True if successful</returns>
+		public static bool ConvertStationCodes(string filename)
+		{
+			SQLiteConnection dbconn = InitialiseDB();
+			dbconn.Open();
+
+			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS station_data (crsID INTEGER UNIQUE, crsCode TEXT UNIQUE, stationName TEXT, PRIMARY KEY(crsID AUTOINCREMENT))", dbconn);
+			CreateStationTable.ExecuteNonQuery();
+
+			using (TextFieldParser parser = new TextFieldParser(filename))
+			{
+				parser.TextFieldType = FieldType.Delimited;
+				parser.SetDelimiters(",");
+				string[] fields;
+				SQLiteCommand AddStationData = new SQLiteCommand("INSERT INTO station_data (crsCode, stationName) VALUES (@crs, @station)", dbconn);
+				while (!parser.EndOfData)
+				{
+					fields = parser.ReadFields();
+					if (fields[1].Length > 3 | fields[1].Length < 3)
+						return false;
+					AddStationData.Parameters.AddWithValue("@crs", fields[1]);
+					AddStationData.Parameters.AddWithValue("@station", fields[0]);
+					AddStationData.ExecuteNonQuery();
+				}
+				dbconn.Close();
+				return true;
+			}
+		}
+
+		/// <summary>
+		/// This method is used to check whether a station exists in the Station Data table.
+		/// The method will also return the station's unique ID.
+		/// </summary>
+		/// <param name="station"></param>
+		/// <returns></returns>
+		public static (bool,int) CheckStationExists(string station)
+		{
+			SQLiteConnection dbconn = InitialiseDB();
+			dbconn.Open();
+			int exists = 0;
+
+			// Define SQL commands.
+			SQLiteCommand CheckCRSExists = new SQLiteCommand("SELECT COUNT(*) FROM station_data WHERE crsCode = @crs", dbconn);
+			SQLiteCommand CheckStationExists = new SQLiteCommand("SELECT COUNT(*) FROM station_data WHERE stationName LIKE @station+'%'");
+			SQLiteCommand FetchCRSIDusingCRS = new SQLiteCommand("SELECT crsID FROM station_data WHERE crsCode = @crs");
+
+			// Check initially against CRS data.
+			if (station.Length == 3)
+			{
+				string crs = station.Substring(0, 3);
+				CheckCRSExists.Parameters.AddWithValue("@crs", crs);
+				exists = Convert.ToInt32(CheckCRSExists.ExecuteScalar());
+				if (exists == 1)
+				{
+					FetchCRSIDusingCRS.Parameters.AddWithValue("@crs", crs);
+					return (true, Convert.ToInt32(FetchCRSIDusingCRS.ExecuteScalar()));
 				}
 			}
-			return "";
+			// Then check against station name.
+			else
+			{
+				CheckStationExists.Parameters.AddWithValue("@station",station);
+				SQLiteDataReader reader = CheckStationExists.ExecuteReader();
+				while (reader.Read())
+				{
+					exists++;
+				}
+				if (exists == 1)
+				{
+					//TODO.
+				}
+			}
+
+			return (false, -1);
+
+
 		}
+
 
 		/// <summary>
 		/// This method is used to convert the NaPTAN RailReferences.csv file for usage by the system.
 		/// </summary>
-		/// <param name="filename">Filename as provided from the textbox.</param>
+		/// <param name="filename">User selected file</param>
 		/// <returns></returns>
 		public static bool ConvertRailReferences(string filename)
 		{
@@ -155,20 +268,12 @@ namespace TrainDisruptionHandler
 			// Initialises create table statements prior to executing them.
 			SQLiteCommand CreateTIPLOCTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS tiploc_data (crsID INTEGER, tiploc TEXT UNIQUE)",dbconn);
 			SQLiteCommand ClearTIPLOCTable = new SQLiteCommand("DELETE FROM tiploc_data",dbconn);
-			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS stations_data (crsID INTEGER UNIQUE, crsCode TEXT UNIQUE, stationName TEXT, PRIMARY KEY(crsID AUTOINCREMENT))", dbconn);
-			SQLiteCommand ClearStationTable = new SQLiteCommand("DELETE FROM stations_data",dbconn);
 			CreateTIPLOCTable.ExecuteNonQuery();
-			CreateStationTable.ExecuteNonQuery();
 			ClearTIPLOCTable.ExecuteNonQuery();
-			ClearStationTable.ExecuteNonQuery();
-			dbconn.Close();
 
 			// Begin conversion of data to the database.
 			using (TextFieldParser parser = new TextFieldParser(filename))
 			{
-				int rowno = 0;
-				int crsID = 0;
-				bool crsAdded = false;
 				parser.TextFieldType = FieldType.Delimited;
 				parser.SetDelimiters(",");
 				string[] fields;
@@ -176,16 +281,6 @@ namespace TrainDisruptionHandler
 				{
 					fields = parser.ReadFields();
 
-					if (rowno != 0)
-					{
-						// Firstly, add CRS data
-						crsAdded = AddToStationData(fields[2], fields[3]);
-						// Then, handle CRS ID and add TIPLOC data.
-						if (crsAdded)
-							crsID++;
-						AddToTIPLOCData(crsID, fields[1]);
-					}
-					rowno++;
 				}
 			}
 			return true;
@@ -239,6 +334,11 @@ namespace TrainDisruptionHandler
 			AddTIPLOCData.Parameters.AddWithValue("@tiploc", TIPLOC);
 			AddTIPLOCData.ExecuteNonQuery();
 			dbconn.Close();
+		}
+
+		public static bool ConvertRailConnections(string filename)
+		{
+			return true;
 		}
 
 

@@ -4,23 +4,42 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Web;
+using System.Net.Http;
 using System.Data.SQLite;
 using Microsoft.VisualBasic.FileIO;
+using System.Threading.Tasks;
 
 namespace TrainDisruptionHandler
 {
-	class UtilsDataFetch
+	class UtilsFetching
 	{
 
-		private readonly string darwin_ldb_key = "?accessToken=3be43ffc-b0b8-4e2c-bb24-28060d72e7fb";
-		private readonly string darwin_web_loc = "https://nea-nrapi.apphb.com/";
+		private static readonly string darwin_ldb_key = "?accessToken=3be43ffc-b0b8-4e2c-bb24-28060d72e7fb";
+		private static readonly string darwin_web_loc = "https://nea-nrapi.apphb.com/";
+		private static readonly string nrdata_password = "#Q47-M6#4vty";
 
-		public UtilsDataFetch()
+		public async Task<string> POSTRequest()
 		{
+			var baseAddress = new Uri("https://opendata.nationalrail.co.uk/");
 
+			using (var httpClient = new HttpClient { BaseAddress = baseAddress })
+			{
+
+				//username = user1@gmail.com & password = P@55w0rd1
+				var values = new Dictionary<string, string>
+				{
+					{ "username","me@alexashley.xyz" },
+					{ "password",nrdata_password }
+				};
+				var content = new FormUrlEncodedContent(values);
+
+				using (var response = await httpClient.PostAsync("authenticate",content))
+				{
+					return await response.Content.ReadAsStringAsync();
+				}
+			}
 		}
-
-		public void FetchRouteingGuide()
+		public static void FetchRouteingGuide()
 		{
 
 		}
@@ -30,7 +49,7 @@ namespace TrainDisruptionHandler
 		/// </summary>
 		/// <param name="requestURL"></param>
 		/// <returns></returns>
-		private string FetchURL(string requestURL)
+		private static string FetchURL(string requestURL)
 		{
 			using (var webClient = new System.Net.WebClient())
 			{
@@ -43,7 +62,7 @@ namespace TrainDisruptionHandler
 		/// <param name="crsDep">Verified CRS code for departure station</param>
 		/// <param name="crsArr">Verified CRS code for arrival station</param>
 		/// <returns></returns>
-		public DelayInfo FetchDarwinLDBDelays(string crsDep, string crsArr)
+		public static DelayInfo FetchDarwinLDBDelays(string crsDep, string crsArr)
 		{
 			string requestConstruct = darwin_web_loc + "delays/" + crsArr + "/from/" + crsDep + "/20" + darwin_ldb_key;
 			return JsonSerializer.Deserialize<DelayInfo>(FetchURL(requestConstruct));
@@ -54,7 +73,7 @@ namespace TrainDisruptionHandler
 		/// <param name="crsDep"></param>
 		/// <param name="crsArr"></param>
 		/// <returns></returns>
-		public FastestInfo FetchDarwinLDBFastest(string crsDep, string crsArr)
+		public static FastestInfo FetchDarwinLDBFastest(string crsDep, string crsArr)
 		{
 			string requestConstruct = darwin_web_loc + "fastest/" + crsDep + "/to/" + crsArr + darwin_ldb_key;
 			return JsonSerializer.Deserialize<FastestInfo>(FetchURL(requestConstruct));
@@ -68,21 +87,10 @@ namespace TrainDisruptionHandler
 		/// <param name="crsDep"></param>
 		/// A valid CRS point - should be verified through VerifyCRSCode first.
 		/// <returns></returns>
-		public BoardInfo FetchDarwinLDBBoard(string boardRequested, string crsDep)
+		public static BoardInfo FetchDarwinLDBBoard(string boardRequested, string crsDep)
 		{
 			string requestConstruct = darwin_web_loc + boardRequested + "/" + crsDep + darwin_ldb_key;
 			return JsonSerializer.Deserialize<BoardInfo>(FetchURL(requestConstruct));
 		}
-
-		public void InitialiseConnectionData()
-		{
-			SQLiteConnection dbconn = UtilsDB.InitialiseDB();
-			dbconn.Open();
-
-			SQLiteCommand CreateConnectionTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS connectiondata (crsCode VARCHAR(3) PRIMARY KEY, connectionType INT, connTime INT, connFrom VARCHAR(2), connTo VARCHAR(3))", dbconn);
-			CreateConnectionTable.ExecuteNonQuery();
-		}
-
-
 	}
 }

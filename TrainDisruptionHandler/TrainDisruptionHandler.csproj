@@ -137,7 +137,7 @@
     </Compile>
     <Compile Include="UtilsAuth.cs" />
     <Compile Include="UtilsDB.cs" />
-    <Compile Include="UtilsDataFetch.cs" />
+    <Compile Include="UtilsFetching.cs" />
     <Compile Include="UtilsGUI.cs" />
     <Compile Include="UtilsJSONClasses.cs" />
     <Compile Include="WindowMain.xaml.cs">
