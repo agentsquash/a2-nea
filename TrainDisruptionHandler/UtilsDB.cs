@@ -38,7 +38,7 @@ namespace TrainDisruptionHandler
 				return -1;
 
 			SQLiteConnection dbconn = InitialiseDB();
-			SQLiteCommand FetchUsername = new SQLiteCommand("SELECT password,userID FROM users_local WHERE username = @username",dbconn);
+			SQLiteCommand FetchUsername = new SQLiteCommand("SELECT password,userID FROM users_local WHERE username = @username", dbconn);
 			FetchUsername.Parameters.AddWithValue("@username", username);
 
 			dbconn.Open();
@@ -46,26 +46,15 @@ namespace TrainDisruptionHandler
 			try
 			{
 				reader.Read();
-
 				bool passwordMatch = UtilsAuth.PasswordVerify(password, reader.GetString(0));
 				if (!passwordMatch)
 					return -1;
 			}
-			
 			catch { return -1; }
 
-
-			SQLiteCommand FetchAccessLevel = new SQLiteCommand("SELECT accessLevel FROM users WHERE UserID = @UserID",dbconn);
+			SQLiteCommand FetchAccessLevel = new SQLiteCommand("SELECT accessLevel FROM users WHERE UserID = @UserID", dbconn);
 			FetchAccessLevel.Parameters.AddWithValue("@UserID", reader.GetInt32(1));
-			SQLiteDataReader accessReader = FetchAccessLevel.ExecuteReader();
-			while (accessReader.Read())
-			{
-				int accessLevel = accessReader.GetInt32(0);
-				dbconn.Close();
-				return accessLevel;
-			}
-			return -1;
-
+			return Convert.ToInt32(FetchAccessLevel.ExecuteScalar());
 		}
 
 		/// <summary>
@@ -75,45 +64,40 @@ namespace TrainDisruptionHandler
 		/// <param name="email">User provided email</param>
 		/// <param name="password">User provided password</param>
 		/// <returns></returns>
-		public static bool CreateLocalAccount(string username,string email,string password)
+		public static bool CreateLocalAccount(string username, string email, string password)
 		{
 			int UserID;
-			
+
 			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
 
 			SQLiteCommand CreateAccountTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS users (UserID INTEGER UNIQUE, accessType INTEGER, accessLevel INTEGER, PRIMARY KEY (UserID AUTOINCREMENT))", dbconn);
-			SQLiteCommand CreateLocalAccountTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS users_local (UserID INTEGER UNIQUE, username VARCHAR(64) UNIQUE, email VARCHAR(320), password BLOB)",dbconn);
+			SQLiteCommand CreateLocalAccountTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS users_local (UserID INTEGER UNIQUE, username VARCHAR(64) UNIQUE, email VARCHAR(320), password BLOB)", dbconn);
 
 			CreateAccountTable.ExecuteNonQuery();
 			CreateLocalAccountTable.ExecuteNonQuery();
 
 			// Check if username exists already before inserting - to satisfy unique constraint.
-			SQLiteCommand CheckUsername = new SQLiteCommand("SELECT username FROM users_local WHERE username = @username",dbconn);
+			SQLiteCommand CheckUsername = new SQLiteCommand("SELECT COUNT(*) FROM users_local WHERE username = @username", dbconn);
 			CheckUsername.Parameters.AddWithValue("@username", username);
-			SQLiteDataReader usernameReader = CheckUsername.ExecuteReader();
-
-			bool unique = true;
-			while (usernameReader.Read())
-				unique = false;
-			if (!unique)
+			int usernameUnique = Convert.ToInt32(CheckUsername.ExecuteScalar());
+			if (usernameUnique == 1)
 				return false;
 
 			// Inserts user account into the 'user' database
-			SQLiteCommand InsertUserAccount = new SQLiteCommand("INSERT INTO users (accessType,accessLevel) VALUES (0,0)",dbconn);
+			SQLiteCommand InsertUserAccount = new SQLiteCommand("INSERT INTO users (accessType,accessLevel) VALUES (0,0)", dbconn);
 			InsertUserAccount.ExecuteNonQuery();
-			SQLiteCommand FetchUserID = new SQLiteCommand("SELECT MAX(UserID) FROM users",dbconn);
-			SQLiteDataReader readerUsers = FetchUserID.ExecuteReader();
-			// Fetches unique UserID from user database.
-			readerUsers.Read();
-			UserID = readerUsers.GetInt32(0);
+			SQLiteCommand FetchUserID = new SQLiteCommand("SELECT MAX(UserID) FROM users", dbconn);
+			UserID = Convert.ToInt32(FetchUserID.ExecuteScalar());
 
 			//Insert local user account.
-			SQLiteCommand InsertUserLocalAccount = new SQLiteCommand("INSERT INTO users_local (UserID, username, email, password) VALUES (" + UserID + ",@username,@email,@password)", dbconn);
+			SQLiteCommand InsertUserLocalAccount = new SQLiteCommand("INSERT INTO users_local (UserID, username, email, password) VALUES (@userid,@username,@email,@password)", dbconn);
+
+			InsertUserLocalAccount.Parameters.AddWithValue("@userid", UserID);
 			InsertUserLocalAccount.Parameters.AddWithValue("@username", username);
 			InsertUserLocalAccount.Parameters.AddWithValue("@email", email);
 			InsertUserLocalAccount.Parameters.AddWithValue("@password", password);
-			
+
 			InsertUserLocalAccount.ExecuteNonQuery();
 			dbconn.Close();
 			return true;
@@ -139,7 +123,7 @@ namespace TrainDisruptionHandler
 			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
 
-			SQLiteCommand CheckTableExists = new SQLiteCommand("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=@tablename",dbconn);
+			SQLiteCommand CheckTableExists = new SQLiteCommand("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=@tablename", dbconn);
 			CheckTableExists.Parameters.AddWithValue("@tablename", tablename);
 			int exists = Convert.ToInt32(CheckTableExists.ExecuteScalar());
 
@@ -158,7 +142,7 @@ namespace TrainDisruptionHandler
 			dbconn.Open();
 
 			// Setting up statements
-			SQLiteCommand ResetStationDataTable = new SQLiteCommand("DROP TABLE IF EXISTS station_data",dbconn);
+			SQLiteCommand ResetStationDataTable = new SQLiteCommand("DROP TABLE IF EXISTS station_data", dbconn);
 			SQLiteCommand ResetTiplocTable = new SQLiteCommand("DROP TABLE IF EXISTS tiploc_data", dbconn);
 			SQLiteCommand ResetConnectionTable = new SQLiteCommand("DROP TABLE IF EXISTS connection_data", dbconn);
 			SQLiteCommand ResetFixedLinkTable = new SQLiteCommand("DROP TABLE IF EXISTS fixed_links", dbconn);
@@ -184,10 +168,8 @@ namespace TrainDisruptionHandler
 			SQLiteCommand CreateStationTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS station_data (crsID INTEGER UNIQUE, crsCode TEXT UNIQUE, stationName TEXT, PRIMARY KEY(crsID AUTOINCREMENT))", dbconn);
 			CreateStationTable.ExecuteNonQuery();
 
-			using (TextFieldParser parser = new TextFieldParser(filename))
+			using (TextFieldParser parser = InitialiseParser(filename))
 			{
-				parser.TextFieldType = FieldType.Delimited;
-				parser.SetDelimiters(",");
 				string[] fields;
 				SQLiteCommand AddStationData = new SQLiteCommand("INSERT INTO station_data (crsCode, stationName) VALUES (@crs, @station)", dbconn);
 				while (!parser.EndOfData)
@@ -210,7 +192,7 @@ namespace TrainDisruptionHandler
 		/// </summary>
 		/// <param name="station"></param>
 		/// <returns></returns>
-		public static (bool,int) CheckStationExists(string station)
+		public static int CheckStationExists(string station)
 		{
 			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
@@ -218,8 +200,9 @@ namespace TrainDisruptionHandler
 
 			// Define SQL commands.
 			SQLiteCommand CheckCRSExists = new SQLiteCommand("SELECT COUNT(*) FROM station_data WHERE crsCode = @crs", dbconn);
-			SQLiteCommand CheckStationExists = new SQLiteCommand("SELECT COUNT(*) FROM station_data WHERE stationName LIKE @station+'%'");
-			SQLiteCommand FetchCRSIDusingCRS = new SQLiteCommand("SELECT crsID FROM station_data WHERE crsCode = @crs");
+			SQLiteCommand CheckStationExists = new SQLiteCommand("SELECT COUNT(*) FROM station_data WHERE stationName LIKE @station+'%'", dbconn);
+			SQLiteCommand FetchCRSIDusingCRS = new SQLiteCommand("SELECT crsID FROM station_data WHERE crsCode = @crs", dbconn);
+			SQLiteCommand FetchCRSIDusingStation = new SQLiteCommand("SELECT crsID FROM station_data WHERE stationName LIKE @station+'%'", dbconn);
 
 			// Check initially against CRS data.
 			if (station.Length == 3)
@@ -230,29 +213,22 @@ namespace TrainDisruptionHandler
 				if (exists == 1)
 				{
 					FetchCRSIDusingCRS.Parameters.AddWithValue("@crs", crs);
-					return (true, Convert.ToInt32(FetchCRSIDusingCRS.ExecuteScalar()));
+					return Convert.ToInt32(FetchCRSIDusingCRS.ExecuteScalar());
 				}
 			}
 			// Then check against station name.
 			else
 			{
-				CheckStationExists.Parameters.AddWithValue("@station",station);
-				SQLiteDataReader reader = CheckStationExists.ExecuteReader();
-				while (reader.Read())
-				{
-					exists++;
-				}
+				CheckStationExists.Parameters.AddWithValue("@station", station);
+				exists = Convert.ToInt32(CheckStationExists.ExecuteScalar());
 				if (exists == 1)
 				{
-					//TODO.
+					FetchCRSIDusingStation.Parameters.AddWithValue("@station", station);
+					return Convert.ToInt32(FetchCRSIDusingStation.ExecuteScalar());
 				}
 			}
-
-			return (false, -1);
-
-
+			return -1;
 		}
-
 
 		/// <summary>
 		/// This method is used to convert the NaPTAN RailReferences.csv file for usage by the system.
@@ -266,80 +242,125 @@ namespace TrainDisruptionHandler
 			dbconn.Open();
 
 			// Initialises create table statements prior to executing them.
-			SQLiteCommand CreateTIPLOCTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS tiploc_data (crsID INTEGER, tiploc TEXT UNIQUE)",dbconn);
-			SQLiteCommand ClearTIPLOCTable = new SQLiteCommand("DELETE FROM tiploc_data",dbconn);
+			SQLiteCommand CreateTIPLOCTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS tiploc_data (crsID INTEGER, tiploc TEXT UNIQUE)", dbconn);
+			SQLiteCommand ClearTIPLOCTable = new SQLiteCommand("DELETE FROM tiploc_data", dbconn);
 			CreateTIPLOCTable.ExecuteNonQuery();
 			ClearTIPLOCTable.ExecuteNonQuery();
 
+			//Create additional statements.
+			SQLiteCommand AddTIPLOCData = new SQLiteCommand("INSERT INTO tiploc_data (crsID, tiploc) VALUES (@crsID, @tiploc)", dbconn);
+
 			// Begin conversion of data to the database.
-			using (TextFieldParser parser = new TextFieldParser(filename))
+			using (TextFieldParser parser = InitialiseParser(filename))
 			{
-				parser.TextFieldType = FieldType.Delimited;
-				parser.SetDelimiters(",");
 				string[] fields;
 				while (!parser.EndOfData)
 				{
 					fields = parser.ReadFields();
+					int crsID = CheckStationExists(fields[2]);
+					if (crsID != -1)
+					{
+						AddTIPLOCData.Parameters.AddWithValue("@crsID", crsID);
+						AddTIPLOCData.Parameters.AddWithValue("@tiploc", fields[1]);
+						AddTIPLOCData.ExecuteNonQuery();
+					}
+				}
+			}
+			return true;
+		}
 
+		public static string FetchTIPLOCCode(string stationCRS)
+		{
+			int crsID = CheckStationExists(stationCRS);
+
+			SQLiteCommand FetchTIPLOCCode = new SQLiteCommand("SELECT tiploc FROM tiploc_data WHERE crsID = @crsID");
+			FetchTIPLOCCode.Parameters.AddWithValue("@crsID", crsID);
+			return Convert.ToString(FetchTIPLOCCode.ExecuteScalar());
+		}
+
+		/// <summary>
+		/// This method is used to convert connection time data for usage by the system.
+		/// </summary>
+		/// <param name="filename">User selected file</param>
+		/// <returns></returns>
+		public static bool ConvertConnectionData(string filename)
+		{
+			SQLiteConnection dbconn = InitialiseDB();
+			dbconn.Open();
+
+			// Create table statements, and clear the table if already exists.
+			SQLiteCommand CreateConnectionsTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS connection_data (crsID INTEGER UNIQUE, connTime INT)",dbconn);
+			SQLiteCommand ClearConnectionTable = new SQLiteCommand("DELETE FROM connection_data", dbconn);
+			CreateConnectionsTable.ExecuteNonQuery();
+			ClearConnectionTable.ExecuteNonQuery();
+
+			// Creating statement to add.
+			SQLiteCommand AddConnectionData = new SQLiteCommand("INSERT INTO connection_data (crsID, connTime) VALUES (@crsID,@connTime)");
+			string[] fields;
+
+			using (TextFieldParser parser = InitialiseParser(filename))
+			{
+				while (!parser.EndOfData)
+				{
+					fields = parser.ReadFields();
+					int crsID = CheckStationExists(fields[0]);
+					AddConnectionData.Parameters.AddWithValue("@crsID", crsID);
+					AddConnectionData.Parameters.AddWithValue("@connTime", fields[1]);
+					AddConnectionData.ExecuteNonQuery();
 				}
 			}
 			return true;
 		}
 
 		/// <summary>
-		/// This private method is used to add the station CRS and name to the station_data database.
-		/// This method is used in combination with ConvertRailReferences.
+		/// This method is used to convert fixed link connection data for usage by the system.
 		/// </summary>
-		/// <param name="rowno">Current row in the CSV file.</param>
-		/// <param name="crs">The station's CRS (3Alpha) code, as found in RailReferences.</param>
-		/// <param name="station">The station's name, with excess data trimmed.</param>
-		/// <returns>If TRUE, then a new CRS code has been added and the CRS Code needs to be incremented.</returns>
-		private static bool AddToStationData(string crs, string station)
+		/// <param name="filename">User selected file</param>
+		/// <returns></returns>
+		public static bool ConvertFixedLinks(string filename)
 		{
 			SQLiteConnection dbconn = InitialiseDB();
 			dbconn.Open();
 
-			station = station.Replace("'", "''").Replace(" Rail Station", "").Replace(" Railway Station", "");
-			SQLiteCommand AddStationData = new SQLiteCommand("INSERT INTO stations_data (crsCode, stationName) VALUES (@crs, @station)", dbconn);
-			SQLiteCommand CheckStationUnique = new SQLiteCommand("SELECT COUNT(crsCode) FROM stations_data WHERE crsCode = @crs", dbconn);
-			CheckStationUnique.Parameters.AddWithValue("@crs", crs);
-			int unique = Convert.ToInt32(CheckStationUnique.ExecuteScalar());
+			// Create table statements, and clear the table if already exists.
+			SQLiteCommand CreateFixedLinksTable = new SQLiteCommand("CREATE TABLE IF NOT EXISTS fixed_links (crsID_dep INTEGER, crsID_arr INTEGER, connTime INT)", dbconn);
+			SQLiteCommand ClearFixedLinksTable = new SQLiteCommand("DELETE FROM fixed_links", dbconn);
+			CreateFixedLinksTable.ExecuteNonQuery();
+			ClearFixedLinksTable.ExecuteNonQuery();
 
-			if (unique == 0)
+			// Creating statement to add.
+			SQLiteCommand AddFixedLinks = new SQLiteCommand("INSERT INTO fixed_links (crsID_dep, crsID_arr, connTime) VALUES (@crsID_dep, @crsID_arr, @connTime)");
+			string[] fields;
+
+			using (TextFieldParser parser = InitialiseParser(filename))
 			{
-				AddStationData.Parameters.AddWithValue("@crs", crs);
-				AddStationData.Parameters.AddWithValue("@station", station);
-				AddStationData.ExecuteNonQuery();
-				dbconn.Close();
-				return true;
+				while (!parser.EndOfData)
+				{
+					fields = parser.ReadFields();
+					int crsID_dep = CheckStationExists(fields[0]);
+					int crsID_arr = CheckStationExists(fields[1]);
+					AddFixedLinks.Parameters.AddWithValue("@crsID_dep", crsID_dep);
+					AddFixedLinks.Parameters.AddWithValue("@crsID_arr", crsID_arr);
+					AddFixedLinks.Parameters.AddWithValue("@connTime", fields[1]);
+					AddFixedLinks.ExecuteNonQuery();
+				}
 			}
-			dbconn.Close();
-			return false;
+			return true;
 		}
 
 		/// <summary>
-		/// This private method is used to add a new TIPLOC and CRSId to the tiploc_data database.
-		/// This method is used in combination with ConvertRailReferences.
+		/// This method is used to initialise the TextFieldParser for CSV files.
 		/// </summary>
-		/// <param name="rowno">Current row in the CSV file.</param>
-		/// <param name="crsID"></param>
-		/// <param name="TIPLOC">Station TIPLOC code.</param>
-		private static void AddToTIPLOCData(int crsID, string TIPLOC)
+		/// <param name="filename">CSV file</param>
+		/// <returns></returns>
+		private static TextFieldParser InitialiseParser(string filename)
 		{
-			SQLiteConnection dbconn = InitialiseDB();
-			dbconn.Open();
-
-			SQLiteCommand AddTIPLOCData = new SQLiteCommand("INSERT INTO tiploc_data (crsID, tiploc) VALUES (@crsID, @tiploc)", dbconn);
-			AddTIPLOCData.Parameters.AddWithValue("@crsID", crsID);
-			AddTIPLOCData.Parameters.AddWithValue("@tiploc", TIPLOC);
-			AddTIPLOCData.ExecuteNonQuery();
-			dbconn.Close();
+			TextFieldParser parser = new TextFieldParser(filename);
+			parser.TextFieldType = FieldType.Delimited;
+			parser.SetDelimiters(",");
+			return parser;
 		}
 
-		public static bool ConvertRailConnections(string filename)
-		{
-			return true;
-		}
 
 
 	}

@@ -99,12 +99,20 @@ namespace TrainDisruptionHandler
 
 		private void Btn_Connection_Click(object sender, RoutedEventArgs e)
 		{
-
+			worker = new BackgroundWorker();
+			worker.DoWork += WorkerConnections_DoWork;
+			worker.RunWorkerCompleted += WorkerConnections_RunWorkerCompleted;
+			DisableStationsTools("connection data");
+			worker.RunWorkerAsync(txtBoxes["file"].Text);
 		}
 
 		private void Btn_Fixed_Links_Click(object sender, RoutedEventArgs e)
 		{
-
+			worker = new BackgroundWorker();
+			worker.DoWork += WorkerFixedLinks_DoWork;
+			worker.RunWorkerCompleted += WorkerFixedLinks_RunWorkerCompleted;
+			DisableStationsTools("connection data");
+			worker.RunWorkerAsync(txtBoxes["file"].Text);
 		}
 
 		private void Btn_Reset_Click(object sender, RoutedEventArgs e)
@@ -143,6 +151,7 @@ namespace TrainDisruptionHandler
 				MessageBox.Show("Successfully imported TIPLOC data.", "Import Success", MessageBoxButton.OK, MessageBoxImage.Information);
 			else
 				MessageBox.Show("TIPLOC data import failed.\nAre you using the correct file?", "Import Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+			CheckStationsGUITools();
 		}
 
 		private void WorkerRailRef_DoWork(object sender, DoWorkEventArgs e)
@@ -150,6 +159,48 @@ namespace TrainDisruptionHandler
 			try
 			{
 				e.Result = UtilsDB.ConvertRailReferences((string)e.Argument);
+			}
+			catch
+			{
+				e.Result = false;
+			}
+		}
+
+		private void WorkerConnections_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			if ((bool)e.Result)
+				MessageBox.Show("Successfully imported connection data.", "Import Success", MessageBoxButton.OK, MessageBoxImage.Information);
+			else
+				MessageBox.Show("Connection data import failed.\nAre you using the correct file?", "Import Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+			CheckStationsGUITools();
+		}
+
+		private void WorkerConnections_DoWork(object sender, DoWorkEventArgs e)
+		{
+			try
+			{
+				e.Result = UtilsDB.ConvertConnectionData((string)e.Argument);
+			}
+			catch
+			{
+				e.Result = false;
+			}
+		}
+
+		private void WorkerFixedLinks_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			if ((bool)e.Result)
+				MessageBox.Show("Successfully imported fixed link data.", "Import Success", MessageBoxButton.OK, MessageBoxImage.Information);
+			else
+				MessageBox.Show("Fixed link data import failed.\nAre you using the correct file?", "Import Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+			CheckStationsGUITools();
+		}
+
+		private void WorkerFixedLinks_DoWork(object sender, DoWorkEventArgs e)
+		{
+			try
+			{
+				e.Result = UtilsDB.ConvertFixedLinks((string)e.Argument);
 			}
 			catch
 			{
@@ -196,6 +247,12 @@ namespace TrainDisruptionHandler
 			labels["import"].Content = userDisplay;
 			StackPanelAdmin.Children.Add(labels["import"]);
 			StackPanelAdmin.Children.Add(progressBar);
+			buttons["file_dialog"].IsEnabled = false;
+			buttons["station_data"].IsEnabled = false;
+			buttons["tiploc"].IsEnabled = false;
+			buttons["connections"].IsEnabled = false;
+			buttons["fixed_links"].IsEnabled = false;
+			buttons["reset"].IsEnabled = false;
 		}
 	}
 }
