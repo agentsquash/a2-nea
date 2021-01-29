@@ -127,7 +127,7 @@ namespace TrainDisruptionHandler
 		private async void Btn_Post_Click(object sender, RoutedEventArgs e)
 		{
 			POSTTokenDTD post = await UtilsFetching.POSTRequest();
-			await UtilsFetching.FetchRoutingGuide(post.token);
+			await UtilsFetching.FetchRouteingGuide(post.token);
 		}
 
 		private void WorkerStationsData_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

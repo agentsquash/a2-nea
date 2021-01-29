@@ -9,6 +9,7 @@ using System.Data.SQLite;
 using Microsoft.VisualBasic.FileIO;
 using System.Threading.Tasks;
 using System.IO.Compression;
+using System.IO;
 
 namespace TrainDisruptionHandler
 {
@@ -18,6 +19,10 @@ namespace TrainDisruptionHandler
 		private static readonly string darwin_web_loc = "https://nea-nrapi.apphb.com/";
 		private static readonly string nrdata_password = "#Q47-M6#4vty";
 
+		/// <summary>
+		/// This requests an API token from the National Rail Open Data system.
+		/// </summary>
+		/// <returns>PostTokenDTD Class: username, token</returns>
 		public static async Task<POSTTokenDTD> POSTRequest()
 		{
 			var baseAddress = new Uri("https://opendata.nationalrail.co.uk/");
@@ -40,7 +45,7 @@ namespace TrainDisruptionHandler
 			}
 		}
 
-		public static async Task<string> FetchRoutingGuide(string token)
+		public static async Task<FileStream> FetchRouteingGuide(string token)
 		{
 			var baseAddress = new Uri("https://opendata.nationalrail.co.uk/api/staticfeeds/2.0/");
 
@@ -51,10 +56,12 @@ namespace TrainDisruptionHandler
 
 				using (var response = await httpClient.GetAsync("routeing"))
 				{
-					
+					var content = await response.Content.ReadAsStreamAsync();
+					var file = File.OpenWrite(@"APIData\RouteingGuide.zip");
+					content.CopyTo(file);
+					return file;
 				}
 			}
-			return "";
 		}
 
 
