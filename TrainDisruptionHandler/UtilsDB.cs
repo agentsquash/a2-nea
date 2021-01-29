@@ -269,13 +269,31 @@ namespace TrainDisruptionHandler
 			return true;
 		}
 
-		public static string FetchTIPLOCCode(string stationCRS)
+		/// <summary>
+		/// Used to convert stationID to a 3 digit CRS code for public use.
+		/// </summary>
+		/// <param name="stationID"></param>
+		/// <returns></returns>
+		public static string FetchCRSCode(int stationID)
 		{
-			int crsID = CheckStationExists(stationCRS);
+			SQLiteConnection dbconn = InitialiseDB();
+			dbconn.Open();
 
-			SQLiteCommand FetchTIPLOCCode = new SQLiteCommand("SELECT tiploc FROM tiploc_data WHERE crsID = @crsID");
-			FetchTIPLOCCode.Parameters.AddWithValue("@crsID", crsID);
-			return Convert.ToString(FetchTIPLOCCode.ExecuteScalar());
+			SQLiteCommand FetchCRSCode = new SQLiteCommand("SELECT crsCode FROM station_data WHERE crsID = @crsID");
+			FetchCRSCode.Parameters.AddWithValue("@crsID", stationID);
+			return Convert.ToString(FetchCRSCode.ExecuteScalar());
+		}
+
+		/// <summary>
+		/// Use to convert station ID to the station name.
+		/// </summary>
+		/// <param name="stationID"></param>
+		/// <returns></returns>
+		public static string FetchStationName(int stationID)
+		{
+			SQLiteCommand FetchStationName = new SQLiteCommand("SELECT stationName FROM station_data WHERE crsID = @crsID");
+			FetchStationName.Parameters.AddWithValue("@crsID", stationID);
+			return Convert.ToString(FetchStationName.ExecuteScalar());
 		}
 
 		/// <summary>
@@ -360,8 +378,6 @@ namespace TrainDisruptionHandler
 			parser.SetDelimiters(",");
 			return parser;
 		}
-
-
 
 	}
 }

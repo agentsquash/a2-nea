@@ -8,23 +8,22 @@ using System.Net.Http;
 using System.Data.SQLite;
 using Microsoft.VisualBasic.FileIO;
 using System.Threading.Tasks;
+using System.IO.Compression;
 
 namespace TrainDisruptionHandler
 {
 	class UtilsFetching
 	{
-
 		private static readonly string darwin_ldb_key = "?accessToken=3be43ffc-b0b8-4e2c-bb24-28060d72e7fb";
 		private static readonly string darwin_web_loc = "https://nea-nrapi.apphb.com/";
 		private static readonly string nrdata_password = "#Q47-M6#4vty";
 
-		public async Task<string> POSTRequest()
+		public static async Task<POSTTokenDTD> POSTRequest()
 		{
 			var baseAddress = new Uri("https://opendata.nationalrail.co.uk/");
 
 			using (var httpClient = new HttpClient { BaseAddress = baseAddress })
 			{
-
 				//username = user1@gmail.com & password = P@55w0rd1
 				var values = new Dictionary<string, string>
 				{
@@ -35,14 +34,29 @@ namespace TrainDisruptionHandler
 
 				using (var response = await httpClient.PostAsync("authenticate",content))
 				{
-					return await response.Content.ReadAsStringAsync();
+					string string_response = await response.Content.ReadAsStringAsync();
+					return JsonSerializer.Deserialize<POSTTokenDTD>(string_response);
 				}
 			}
 		}
-		public static void FetchRouteingGuide()
-		{
 
+		public static async Task<string> FetchRoutingGuide(string token)
+		{
+			var baseAddress = new Uri("https://opendata.nationalrail.co.uk/api/staticfeeds/2.0/");
+
+			using (var httpClient = new HttpClient { BaseAddress = baseAddress })
+			{
+				httpClient.DefaultRequestHeaders.Add("Accept", "*/*");
+				httpClient.DefaultRequestHeaders.Add("X-Auth-Token", token);
+
+				using (var response = await httpClient.GetAsync("routeing"))
+				{
+					
+				}
+			}
+			return "";
 		}
+
 
 		/// <summary>
 		/// This function is to fetch requested strings from a URL.

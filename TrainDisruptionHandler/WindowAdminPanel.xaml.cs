@@ -48,6 +48,8 @@ namespace TrainDisruptionHandler
 			StackPanelAdmin.Children.Add(buttons["fixed_links"]);
 			buttons["reset"] = UtilsGUI.CreateButton("Reset Stations Data", "reset");
 			StackPanelAdmin.Children.Add(buttons["reset"]);
+			buttons["post"] = UtilsGUI.CreateButton("Post Request", "post");
+			StackPanelAdmin.Children.Add(buttons["post"]);
 			labels["import"] = UtilsGUI.CreateLabel("Importing...", "import");
 
 			buttons["file_dialog"].Click += new RoutedEventHandler(Btn_File_Dialog_Click);
@@ -56,6 +58,7 @@ namespace TrainDisruptionHandler
 			buttons["connections"].Click += new RoutedEventHandler(Btn_Connection_Click);
 			buttons["fixed_links"].Click += new RoutedEventHandler(Btn_Fixed_Links_Click);
 			buttons["reset"].Click += new RoutedEventHandler(Btn_Reset_Click);
+			buttons["post"].Click += new RoutedEventHandler(Btn_Post_Click);
 			progressBar = new ProgressBar()
 			{
 				Name = "Bar_Progress",
@@ -119,6 +122,12 @@ namespace TrainDisruptionHandler
 		{
 			UtilsDB.ResetStationData();
 			CheckStationsGUITools();
+		}
+
+		private async void Btn_Post_Click(object sender, RoutedEventArgs e)
+		{
+			POSTTokenDTD post = await UtilsFetching.POSTRequest();
+			await UtilsFetching.FetchRoutingGuide(post.token);
 		}
 
 		private void WorkerStationsData_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -254,5 +263,7 @@ namespace TrainDisruptionHandler
 			buttons["fixed_links"].IsEnabled = false;
 			buttons["reset"].IsEnabled = false;
 		}
+
+		
 	}
 }

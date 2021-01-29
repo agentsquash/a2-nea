@@ -146,14 +146,9 @@ namespace TrainDisruptionHandler
         public bool assocIsCancelled { get; set; }
     }
 
-    public class CRSStation
-    {
-        public string stationName { get; set; }
-        public string crsCode { get; set; }
-    }
-
-    public class CRSData
-    {
-        public List<CRSData> crsData { get; set; }
-    }
+    public class POSTTokenDTD
+	{
+        public string username { get; set; }
+        public string token { get; set; }
+	}
 }

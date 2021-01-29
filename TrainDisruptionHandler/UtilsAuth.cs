@@ -19,7 +19,7 @@ namespace TrainDisruptionHandler
 		/// <returns>TRUE: Username valid. | FALSE: Username invalid. </returns>
 		public static bool UsernameValidation(string username)
 		{
-			if (username.Length > 0 | username.Length <= 64)
+			if (username.Length > 0 | username.Length <= 20)
 				return true;
 			return false;
 		}
